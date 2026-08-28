@@ -1,0 +1,4 @@
+'use client'
+import { motion } from 'framer-motion'
+import { ArrowUpRight } from 'lucide-react'
+export function EventLevel({ event, onOpen }: { event: readonly string[], onOpen: ()=>void }) { const [level,title,desc,team,difficulty,icon]=event; return <motion.article initial={{opacity:0,y:28}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.18}} transition={{duration:.42,ease:'easeOut'}} whileHover={{y:-7}} className="event-card"><div className="event-top"><span>LEVEL {level}</span><span className="event-icon">{icon}</span></div><h3>{title}</h3><p>{desc}</p><div className="badges"><b>{team}</b><b>{difficulty}</b></div><div className="event-bottom"><small>PRIZE POOL: TBA</small><button type="button" onClick={onOpen} aria-label={`View ${title} challenge`}>View challenge <ArrowUpRight size={15}/></button></div></motion.article> }
