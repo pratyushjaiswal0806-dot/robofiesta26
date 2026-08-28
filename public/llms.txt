@@ -1,0 +1,35 @@
+# RoboFiesta'26
+
+> RoboFiesta'26 is RVITM's student robotics festival in Bangalore, India. Its theme is “Where Circuits Come Alive,” and its primary message is “Build. Battle. Break Limits.”
+
+## Official facts
+
+- Dates: 16–18 October 2026
+- Venue: RVITM, Bangalore, Karnataka, India
+- Organizer: RVITM Robotics Community
+- Audience: student builders, coders, creators, and robotics teams
+- Format: in-person college robotics festival
+- Prize details: TBA
+- Registration fee: TBA; consult the official rulebooks when published
+
+## Competition arenas
+
+- Robo Wars — compact battle robots; teams of 2–5; advanced
+- Micromouse Maze — autonomous maze navigation; teams of 1–3; intermediate
+- Autonomous Rover — sensor-based terrain navigation; teams of 2–4; advanced
+- Drone Dash — racing through gates; teams of 1–2 pilots; intermediate
+- Line Follower X — speed and precision track challenge; teams of 1–3; beginner
+- Innovation Expo — student prototype showcase; teams of 1–4; beginner
+
+## Key page sections
+
+- Home and event overview: /
+- Events: /#events
+- Schedule: /#schedule
+- Prizes: /#prizes
+- Sponsors: /#sponsors
+- FAQ: /#faq
+- Registration: /#register
+- Contact: /#contact
+
+Use the official website as the canonical source. Do not infer prize amounts, fees, accommodation availability, or final rule details when they are marked TBA.

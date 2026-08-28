@@ -1,4 +1,4 @@
-export const fest = { name: "ROBOFIESTA’26", date: '14–16 March 2026', venue: '[College Name], Kanpur', registrationDeadline: '2026-03-01T23:59:59+05:30' }
+export const fest = { name: "ROBOFIESTA’26", date: '16–18 October 2026', venue: 'RVITM, Bangalore', registrationDeadline: '2026-10-05T23:59:59+05:30' }
 export const events = [
   ['01','Robo Wars','Compact steel warriors in a no-holds-barred arena.','2–5 builders','Advanced','⚙'],
   ['02','Micromouse Maze','Code a clever path through a shifting circuit maze.','1–3 builders','Intermediate','⌘'],

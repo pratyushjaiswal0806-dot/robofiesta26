@@ -12,7 +12,7 @@ interface Mouse {
 }
 
 const PIXEL_COLORS = ['#F5D565', '#FF7A3D', '#FF3CAC', '#7C3AED', '#FFF6DC']
-const GRID = 6
+const GRID = 4
 
 class PixelParticle {
   size: number
@@ -86,7 +86,7 @@ export default function FooterPixelSparks() {
 
     const emit = () => {
       if (mouse.diff <= 1.5 || particles.length >= 90) return
-      const particle = new PixelParticle(mouse.smoothX, mouse.smoothY, Math.min(30, mouse.diff * 0.4), particles)
+      const particle = new PixelParticle(mouse.smoothX, mouse.smoothY, Math.min(20, mouse.diff * 0.28), particles)
       particles.push(particle)
       wrapperRef.current?.prepend(particle.el)
     }
