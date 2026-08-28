@@ -46,8 +46,11 @@ class PixelParticle {
   }
 
   render() {
-    this.el.setAttribute('width', this.size.toString())
-    this.el.setAttribute('height', this.size.toString())
+    const snappedSize = Math.max(0, Math.round(this.size / GRID) * GRID)
+    this.el.setAttribute('x', Math.round(this.x).toString())
+    this.el.setAttribute('y', Math.round(this.y).toString())
+    this.el.setAttribute('width', snappedSize.toString())
+    this.el.setAttribute('height', snappedSize.toString())
   }
 }
 
@@ -122,7 +125,7 @@ export default function FooterPixelSparks() {
 
   return (
     <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 overflow-hidden" aria-hidden="true">
-      <svg ref={svgRef} xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 h-full w-full" style={{ imageRendering: 'pixelated' }}>
+      <svg ref={svgRef} xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges" className="absolute inset-0 h-full w-full" style={{ imageRendering: 'pixelated', shapeRendering: 'crispEdges' }}>
         <g ref={wrapperRef} />
       </svg>
     </div>
