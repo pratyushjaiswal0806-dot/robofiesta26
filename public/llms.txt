@@ -30,6 +30,6 @@
 - Sponsors: /#sponsors
 - FAQ: /#faq
 - Registration: /#register
-- Contact: /#contact
+- Contact: /contact
 
 Use the official website as the canonical source. Do not infer prize amounts, fees, accommodation availability, or final rule details when they are marked TBA.

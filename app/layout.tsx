@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { SoundProvider } from '@/components/SoundSystem'
 import { StructuredData } from '@/components/StructuredData'
+import { MotionDirector } from '@/components/MotionDirector'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -40,5 +41,5 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, colorScheme: 'light', themeColor: '#2A0B4F' }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en-IN"><body><StructuredData/><SoundProvider>{children}</SoundProvider></body></html>
+  return <html lang="en-IN"><body><StructuredData/><SoundProvider><MotionDirector/>{children}</SoundProvider></body></html>
 }

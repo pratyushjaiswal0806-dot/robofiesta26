@@ -1,7 +1,6 @@
 'use client'
 
-import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 const sparkles = [
   ['7%','3%','s1'],['86%','5%','s2'],['18%','10%','s3'],['74%','16%','s1'],
@@ -10,15 +9,41 @@ const sparkles = [
 ]
 
 export function SkyWorld() {
-  const { scrollYProgress } = useScroll()
-  const [progress, setProgress] = useState(0)
-  const backgroundPositionY = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1])
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
-  useMotionValueEvent(scrollYProgress, 'change', latest => setProgress(Math.round(latest * 100)))
+  const skyRef=useRef<HTMLDivElement>(null)
+  const readoutRef=useRef<HTMLSpanElement>(null)
+  const verticalFillRef=useRef<HTMLElement>(null)
+  const horizontalFillRef=useRef<HTMLElement>(null)
+  const energyRef=useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let frame=0
+    let previous=-1
+    const update=() => {
+      frame=0
+      const maximum=Math.max(1,document.documentElement.scrollHeight-window.innerHeight)
+      const ratio=Math.min(1,Math.max(0,window.scrollY/maximum))
+      const percent=Math.round(ratio*100)
+      if (percent===previous) return
+      previous=percent
+      if (skyRef.current) skyRef.current.style.backgroundPositionY=`${percent}%`
+      if (readoutRef.current) readoutRef.current.textContent=`${String(percent).padStart(2,'0')}%`
+      energyRef.current?.setAttribute('aria-valuenow',String(percent))
+      if (verticalFillRef.current) verticalFillRef.current.style.transform=`scaleY(${ratio})`
+      if (horizontalFillRef.current) horizontalFillRef.current.style.transform=`scaleX(${ratio})`
+    }
+    const schedule=()=>{if (!frame) frame=window.requestAnimationFrame(update)}
+    update()
+    window.addEventListener('scroll',schedule,{passive:true})
+    window.addEventListener('resize',schedule,{passive:true})
+    return ()=>{
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('scroll',schedule)
+      window.removeEventListener('resize',schedule)
+    }
+  },[])
 
   return <>
-    <motion.div className="sky-world" style={{ backgroundPositionY }} aria-hidden="true" />
+    <div ref={skyRef} className="sky-world" aria-hidden="true" />
     <div className="sky-dither" aria-hidden="true" />
     <div className="world-decor" aria-hidden="true">
       {sparkles.map(([left,top,size],i)=><i key={i} className={`world-spark ${size}`} style={{left,top,animationDelay:`-${i*.61}s`}} />)}
@@ -29,10 +54,10 @@ export function SkyWorld() {
       <i className="circuit-glyph glyph-two">⚙</i>
       <i className="circuit-glyph glyph-three">▦</i>
     </div>
-    <div className="energy" role="progressbar" aria-label="Page scroll progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
-      <span className="energy-readout">{String(progress).padStart(2,'0')}%</span>
+    <div ref={energyRef} className="energy" role="progressbar" aria-label="Page scroll progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
+      <span ref={readoutRef} className="energy-readout">00%</span>
       <b className="energy-label">PROGRESS</b>
-      <div className="energy-track"><motion.i className="energy-fill desktop" style={{scaleY}} /><motion.i className="energy-fill mobile" style={{scaleX}} /></div>
+      <div className="energy-track"><i ref={verticalFillRef} className="energy-fill desktop"/><i ref={horizontalFillRef} className="energy-fill mobile"/></div>
       <small>LVL</small>
     </div>
   </>

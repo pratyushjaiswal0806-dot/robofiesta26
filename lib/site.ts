@@ -10,6 +10,13 @@ export const site = {
   city: 'Bangalore',
   region: 'Karnataka',
   country: 'IN',
+  contact: {
+    email: 'info.rvitm@rvei.edu.in',
+    phone: '08035095100',
+    phoneLabel: '080-35095100',
+    address: 'Chaithanya Layout, 8th Phase, JP Nagar, Bengaluru, Karnataka 560076',
+    hours: 'Mon–Fri 09:00–17:00 · Sat 09:00–14:00',
+  },
   startDate: '2026-10-16T09:00:00+05:30',
   endDate: '2026-10-18T18:00:00+05:30',
 } as const
