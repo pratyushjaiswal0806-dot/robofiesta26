@@ -3,6 +3,7 @@ import './globals.css'
 import { SoundProvider } from '@/components/SoundSystem'
 import { StructuredData } from '@/components/StructuredData'
 import { MotionDirector } from '@/components/MotionDirector'
+import { SiteLoader } from '@/components/SiteLoader'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
   creator: site.organizer,
   publisher: site.organizer,
   category: 'Education and Robotics',
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    shortcut: ['/icon.svg'],
+  },
   keywords: ['RoboFiesta 2026', 'RVITM robotics fest', 'robotics competition Bangalore', 'college robotics festival India', 'Robo Wars', 'Micromouse Maze', 'Autonomous Rover', 'Drone Dash', 'Line Follower', 'Innovation Expo'],
   alternates: { canonical: '/' },
   openGraph: {
@@ -41,5 +46,5 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, colorScheme: 'light', themeColor: '#2A0B4F' }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en-IN"><body><StructuredData/><SoundProvider><MotionDirector/>{children}</SoundProvider></body></html>
+  return <html lang="en-IN"><body><StructuredData/><SoundProvider><SiteLoader/><MotionDirector/>{children}</SoundProvider></body></html>
 }

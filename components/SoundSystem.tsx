@@ -6,6 +6,7 @@ type SoundContextValue = { enabled: boolean; toggle: () => void }
 type ChipNote = readonly [frequency: number, beats: number, bass?: number]
 
 const SoundContext = createContext<SoundContextValue>({ enabled: true, toggle: () => undefined })
+const SOUND_STORAGE_KEY = 'robofiesta-sound-enabled'
 
 const pitch = {
   G2: 98, A2: 110, C3: 130.81, E3: 164.81,
@@ -89,6 +90,11 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     const next = !enabledRef.current
     enabledRef.current = next
     setEnabled(next)
+    try {
+      window.localStorage.setItem(SOUND_STORAGE_KEY, next ? '1' : '0')
+    } catch {
+      /* Audio remains usable when storage is unavailable. */
+    }
     if (next) void context.resume().catch(()=>undefined)
     const now = context.currentTime
     master.gain.cancelScheduledValues(now)
@@ -97,8 +103,18 @@ export function SoundProvider({ children }: { children: ReactNode }) {
   }, [startEngine])
 
   useEffect(() => {
+    let initialEnabled = true
+    try {
+      const stored = window.localStorage.getItem(SOUND_STORAGE_KEY)
+      if (stored === '0') initialEnabled = false
+    } catch {
+      /* Keep the default ON state when storage is unavailable. */
+    }
+    enabledRef.current = initialEnabled
+    setEnabled(initialEnabled)
     const context = startEngine()
-    void context.resume().catch(()=>undefined)
+    if (masterRef.current) masterRef.current.gain.value = initialEnabled ? .12 : 0
+    if (initialEnabled) void context.resume().catch(()=>undefined)
     const unlockAudio = () => {
       const current = contextRef.current
       if (enabledRef.current && current?.state === 'suspended') void current.resume().catch(()=>undefined)
@@ -114,15 +130,30 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       if (!enabledRef.current || !(event.target as HTMLElement | null)?.closest('button, .pixel-button')) return
       playTone(523, .065, 'square', .06)
     }
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== SOUND_STORAGE_KEY) return
+      const next = event.newValue !== '0'
+      enabledRef.current = next
+      setEnabled(next)
+      const master = masterRef.current
+      if (!master || !contextRef.current) return
+      const now = contextRef.current.currentTime
+      master.gain.cancelScheduledValues(now)
+      master.gain.setValueAtTime(master.gain.value, now)
+      master.gain.linearRampToValueAtTime(next ? .12 : 0, now + .12)
+      if (next) void contextRef.current.resume().catch(()=>undefined)
+    }
     document.addEventListener('pointerover', handlePointerOver)
     document.addEventListener('pointerdown', unlockAudio)
     document.addEventListener('pointerdown', handlePointerDown)
     document.addEventListener('keydown', unlockAudio)
+    window.addEventListener('storage', handleStorage)
     return () => {
       document.removeEventListener('pointerover', handlePointerOver)
       document.removeEventListener('pointerdown', unlockAudio)
       document.removeEventListener('pointerdown', handlePointerDown)
       document.removeEventListener('keydown', unlockAudio)
+      window.removeEventListener('storage', handleStorage)
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = null
       sequenceStartedRef.current = false

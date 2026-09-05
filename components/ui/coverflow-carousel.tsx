@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect
@@ -11,6 +12,7 @@ export interface CoverflowSlide {
   alt: string
   title?: string
   subtitle?: string
+  href?: string
   meta?: { label: string; value: string }[]
 }
 
@@ -174,14 +176,15 @@ export function CoverflowCarousel({
           </div>
         </div>
         {showNavigation && <>
-          <button type="button" aria-label="Previous slide" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(-1) }} className="absolute left-3 top-1/2 z-[200] -translate-y-1/2 rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-[55%] hover:shadow-[5px_5px_0_0_#2A1454] active:translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronLeft className="size-5" strokeWidth={3} /></button>
-          <button type="button" aria-label="Next slide" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(1) }} className="absolute right-3 top-1/2 z-[200] -translate-y-1/2 rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-[55%] hover:shadow-[5px_5px_0_0_#2A1454] active:-translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronRight className="size-5" strokeWidth={3} /></button>
+          <button type="button" aria-label="Previous slide" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(-1) }} className="absolute left-3 top-1/2 z-[200] -translate-y-1/2 rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-[55%] hover:shadow-[5px_5px_0_0_#2A1454] active:translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronLeft aria-hidden="true" className="size-5" strokeWidth={3} /></button>
+          <button type="button" aria-label="Next slide" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(1) }} className="absolute right-3 top-1/2 z-[200] -translate-y-1/2 rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-[55%] hover:shadow-[5px_5px_0_0_#2A1454] active:-translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronRight aria-hidden="true" className="size-5" strokeWidth={3} /></button>
         </>}
       </div>
       {showCaption && active?.title && <div key={selected} aria-live="polite" className="mt-4 flex flex-col items-center px-6 text-center duration-300 animate-in fade-in">
         <p className="font-pixel text-[15px] uppercase tracking-tight text-[#2A1454]">{active.title}</p>
         {active.subtitle && <p className="mt-1 text-[13px] text-[#6B5B95]">{active.subtitle}</p>}
         {active.meta && active.meta.length > 0 && <dl className="mt-5 flex w-full max-w-[420px] flex-wrap justify-center gap-2 text-[11px]">{active.meta.map((row) => <div key={row.label} className="rounded-sm border-2 border-[#2A1454] bg-[#FFF6DC] px-2 py-1 shadow-[2px_2px_0_0_#2A1454]"><dt className="inline text-[#6B5B95]">{row.label}: </dt><dd className="inline font-semibold text-[#2A1454]">{row.value}</dd></div>)}</dl>}
+        {active.href && <Link href={active.href} className="carousel-detail-link">View full challenge <ChevronRight size={15} aria-hidden="true" /></Link>}
       </div>}
       {showPagination && <div className="mt-6 flex items-center justify-center gap-3">{slides.map((_, index) => <button key={index} type="button" aria-label={`Go to slide ${index + 1}`} aria-current={index === selected} onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); goTo(index) }} className={cn("size-3 rotate-45 border-2 border-[#2A1454] transition-colors", index === selected ? "bg-[#F5D565]" : "bg-transparent opacity-50")} />)}</div>}
     </div>

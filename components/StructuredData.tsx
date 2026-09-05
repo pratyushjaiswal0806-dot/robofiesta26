@@ -65,19 +65,19 @@ export function StructuredData() {
         '@id': `${site.url}/#events`,
         name: 'RoboFiesta competition arenas',
         numberOfItems: events.length,
-        itemListElement: events.map(([level, name, description], index) => ({
+        itemListElement: events.map((event, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          name,
-          description,
-          url: `${site.url}/#events`,
-          identifier: `Level ${level}`,
+          name: event.title,
+          description: event.description,
+          url: `${site.url}/events/${event.slug}`,
+          identifier: `Level ${event.level}`,
         })),
       },
       {
         '@type': 'FAQPage',
         '@id': `${site.url}/#faq-schema`,
-        mainEntity: faqs.map(([question, answer]) => ({
+        mainEntity: faqs.map(({ question, answer }) => ({
           '@type': 'Question',
           name: question,
           acceptedAnswer: { '@type': 'Answer', text: answer },

@@ -3,33 +3,16 @@
 import { CoverflowCarousel, type CoverflowSlide } from '@/components/ui/coverflow-carousel'
 import { events } from '@/lib/data'
 
-const tilePaths = [
-  '/events/robo-wars.png',
-  '/events/micromouse-maze.png',
-  '/events/autonomous-rover.png',
-  '/events/drone-dash.png',
-  '/events/line-follower-x.png',
-  '/events/innovation-expo.png',
-]
-
-const tileAlts = [
-  'Pixel-art battle robots on a cream tile for the Robo Wars event',
-  'Pixel-art maze robot on a light-blue tile for the Micromouse Maze event',
-  'Pixel-art sensor rover on a peach tile for the Autonomous Rover event',
-  'Pixel-art racing drone on a light-blue tile for the Drone Dash event',
-  'Pixel-art track robot on a cream tile for the Line Follower X event',
-  'Pixel-art exhibition board on a peach tile for the Innovation Expo event',
-]
-
-const slides: CoverflowSlide[] = events.map(([level, title, description, team, difficulty], index) => ({
-  src: tilePaths[index],
-  alt: tileAlts[index],
-  title,
-  subtitle: `Level ${level} · ${description}`,
+const slides: CoverflowSlide[] = events.map((event) => ({
+  src: event.artwork,
+  alt: `Pixel-art poster for the ${event.title} event`,
+  title: event.title,
+  subtitle: `Level ${event.level} · ${event.description}`,
+  href: `/events/${event.slug}`,
   meta: [
-    { label: 'Team', value: team },
-    { label: 'Level', value: difficulty },
-    { label: 'Prize Pool', value: 'TBA' },
+    { label: 'Team', value: event.teamSize },
+    { label: 'Level', value: event.difficulty },
+    { label: 'Prize Pool', value: event.prizePool },
   ],
 }))
 

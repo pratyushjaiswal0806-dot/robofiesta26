@@ -18,7 +18,6 @@ const revealSelector = [
   '.contact-details',
   '.contact-form',
   '.contact-console',
-  '.racer-console',
   '.footer-console',
   '.not-found-copy',
   '.not-found-console',

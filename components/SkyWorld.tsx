@@ -18,16 +18,18 @@ export function SkyWorld() {
   useEffect(() => {
     let frame=0
     let previous=-1
+    const scrollElement = document.scrollingElement || document.documentElement
     const update=() => {
       frame=0
-      const maximum=Math.max(1,document.documentElement.scrollHeight-window.innerHeight)
-      const ratio=Math.min(1,Math.max(0,window.scrollY/maximum))
+      const maximum=Math.max(1,scrollElement.scrollHeight-scrollElement.clientHeight)
+      const ratio=Math.min(1,Math.max(0,scrollElement.scrollTop/maximum))
       const percent=Math.round(ratio*100)
       if (percent===previous) return
       previous=percent
       if (skyRef.current) skyRef.current.style.backgroundPositionY=`${percent}%`
       if (readoutRef.current) readoutRef.current.textContent=`${String(percent).padStart(2,'0')}%`
       energyRef.current?.setAttribute('aria-valuenow',String(percent))
+      energyRef.current?.setAttribute('aria-valuetext',`${percent}% of page explored`)
       if (verticalFillRef.current) verticalFillRef.current.style.transform=`scaleY(${ratio})`
       if (horizontalFillRef.current) horizontalFillRef.current.style.transform=`scaleX(${ratio})`
     }
@@ -35,10 +37,13 @@ export function SkyWorld() {
     update()
     window.addEventListener('scroll',schedule,{passive:true})
     window.addEventListener('resize',schedule,{passive:true})
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(schedule)
+    observer?.observe(document.documentElement)
     return ()=>{
       window.cancelAnimationFrame(frame)
       window.removeEventListener('scroll',schedule)
       window.removeEventListener('resize',schedule)
+      observer?.disconnect()
     }
   },[])
 

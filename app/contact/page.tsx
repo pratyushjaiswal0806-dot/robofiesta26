@@ -9,6 +9,13 @@ export const metadata: Metadata = {
     title: "Contact RoboFiesta'26",
     description: 'Open a transmission to the RoboFiesta team at RVITM, Bangalore.',
     url: '/contact',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: "RoboFiesta'26 communications bay" }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Contact RoboFiesta'26",
+    description: 'Open a transmission to the RoboFiesta team at RVITM, Bangalore.',
+    images: ['/opengraph-image'],
   },
 }
 
