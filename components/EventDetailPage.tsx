@@ -24,7 +24,7 @@ export function EventDetailPage({ event }: { event: EventRecord }) {
 
       <div className="event-detail-layout">
         <div className="event-detail-art">
-          <Image src={event.artwork} alt={`Pixel-art poster for ${event.title}`} width={768} height={768} priority />
+          <Image src={event.artwork} alt={`Pixel-art poster for ${event.title}`} width={event.artworkWidth} height={event.artworkHeight} priority />
           <span className="event-detail-icon" aria-hidden="true">{event.icon}</span>
         </div>
 

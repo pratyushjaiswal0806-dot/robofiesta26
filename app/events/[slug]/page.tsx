@@ -21,7 +21,7 @@ export function generateMetadata({ params }: EventRouteProps): Metadata {
       title: `${event.title} — RoboFiesta’26`,
       description: event.description,
       url: `/events/${event.slug}`,
-      images: [{ url: event.artwork, width: 768, height: 768, alt: `Pixel-art poster for ${event.title}` }],
+      images: [{ url: event.artwork, width: event.artworkWidth, height: event.artworkHeight, alt: `Pixel-art poster for ${event.title}` }],
     },
     twitter: {
       card: 'summary_large_image',

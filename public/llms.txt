@@ -17,7 +17,7 @@
 - Robo Wars — compact battle robots; teams of 2–5; advanced
 - Micromouse Maze — autonomous maze navigation; teams of 1–3; intermediate
 - Autonomous Rover — sensor-based terrain navigation; teams of 2–4; advanced
-- Drone Dash — racing through gates; teams of 1–2 pilots; intermediate
+- Waste Drift — build-and-race drift challenge; teams of 1–3 builders; intermediate
 - Line Follower X — speed and precision track challenge; teams of 1–3; beginner
 - Innovation Expo — student prototype showcase; teams of 1–4; beginner
 

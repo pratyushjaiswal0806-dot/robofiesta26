@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
     shortcut: ['/icon.svg'],
   },
-  keywords: ['RoboFiesta 2026', 'RVITM robotics fest', 'robotics competition Bangalore', 'college robotics festival India', 'Robo Wars', 'Micromouse Maze', 'Autonomous Rover', 'Drone Dash', 'Line Follower', 'Innovation Expo'],
+  keywords: ['RoboFiesta 2026', 'RVITM robotics fest', 'robotics competition Bangalore', 'college robotics festival India', 'Robo Wars', 'Micromouse Maze', 'Autonomous Rover', 'Waste Drift', 'Line Follower', 'Innovation Expo'],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',

@@ -3,7 +3,7 @@ import { EventsPage } from '@/components/EventsPage'
 
 export const metadata: Metadata = {
   title: 'Events — Choose Your Arena',
-  description: 'Explore all six RoboFiesta 2026 robotics events, from Robo Wars and Micromouse Maze to Drone Dash and Innovation Expo.',
+  description: 'Explore all six RoboFiesta 2026 robotics events, from Robo Wars and Micromouse Maze to Waste Drift and Innovation Expo.',
   alternates: { canonical: '/events' },
   openGraph: {
     title: "RoboFiesta'26 Events — Choose Your Arena",

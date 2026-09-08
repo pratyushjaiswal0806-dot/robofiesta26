@@ -9,6 +9,8 @@ export type EventRecord = {
   difficulty: EventDifficulty
   icon: string
   artwork: string
+  artworkWidth: number
+  artworkHeight: number
   prizePool: string
   timing: string
   duration: string
@@ -34,6 +36,8 @@ export const events = [
     difficulty: 'Advanced',
     icon: '⚙',
     artwork: '/events/robo-wars.png',
+    artworkWidth: 512,
+    artworkHeight: 512,
     prizePool: 'Details TBA',
     timing: 'Day 2 · 02:00 PM — eliminations',
     duration: 'Two-day battle bracket',
@@ -53,6 +57,8 @@ export const events = [
     difficulty: 'Intermediate',
     icon: '⌘',
     artwork: '/events/micromouse-maze.png',
+    artworkWidth: 512,
+    artworkHeight: 512,
     prizePool: 'Details TBA',
     timing: 'Day 2 · 09:00 AM — prelims',
     duration: 'Timed maze attempts',
@@ -72,6 +78,8 @@ export const events = [
     difficulty: 'Advanced',
     icon: '◈',
     artwork: '/events/autonomous-rover.png',
+    artworkWidth: 512,
+    artworkHeight: 512,
     prizePool: 'Details TBA',
     timing: 'Day 2 · 05:00 PM — challenge',
     duration: 'Timed terrain mission',
@@ -83,22 +91,24 @@ export const events = [
     ],
   },
   {
-    slug: 'drone-dash',
+    slug: 'waste-drift',
     level: '04',
-    title: 'Drone Dash',
-    description: 'Thread the gates. Chase the fastest clean lap.',
-    teamSize: '1–2 pilots',
+    title: 'Waste Drift',
+    description: 'Build a scrappy racer and chase the fastest clean run.',
+    teamSize: '1–3 builders',
     difficulty: 'Intermediate',
     icon: '✦',
-    artwork: '/events/drone-dash.png',
-    prizePool: 'Details TBA',
-    timing: 'Day 2 · 11:00 AM — trials',
-    duration: 'Qualifying laps + final',
-    format: 'Gate-course time trial',
+    artwork: '/events/waste-drift-poster.png',
+    artworkWidth: 1414,
+    artworkHeight: 2000,
+    prizePool: '₹3,000',
+    timing: '25 Nov 2026 · RVITH',
+    duration: 'Timed drift-course challenge',
+    format: 'Build-and-race challenge',
     rules: [
-      'Pilots must complete a clean gate sequence inside the flight zone.',
-      'Fastest valid lap takes the top slot.',
-      'Safety checks and equipment limits will be published before registration.',
+      'Teams of 1–3 builders compete with one race-ready vehicle.',
+      'The fastest valid run through the marked course takes the top slot.',
+      'Vehicle requirements and safety checks will be published before registration.',
     ],
   },
   {
@@ -110,6 +120,8 @@ export const events = [
     difficulty: 'Beginner',
     icon: '➰',
     artwork: '/events/line-follower-x.png',
+    artworkWidth: 512,
+    artworkHeight: 512,
     prizePool: 'Details TBA',
     timing: 'Schedule to be announced',
     duration: 'Timed track attempts',
@@ -129,6 +141,8 @@ export const events = [
     difficulty: 'Beginner',
     icon: '▣',
     artwork: '/events/innovation-expo.png',
+    artworkWidth: 512,
+    artworkHeight: 512,
     prizePool: 'Details TBA',
     timing: 'Day 3 · 01:00 PM — showcase',
     duration: 'Demo floor showcase',
@@ -151,7 +165,7 @@ export const schedule = {
   ],
   'Day 2 — Compete': [
     ['09:00 AM', 'Micromouse Maze Prelims'],
-    ['11:00 AM', 'Drone Dash Trials'],
+    ['11:00 AM', 'Waste Drift Trials'],
     ['02:00 PM', 'Robo Wars Eliminations'],
     ['05:00 PM', 'Autonomous Rover Challenge'],
   ],
