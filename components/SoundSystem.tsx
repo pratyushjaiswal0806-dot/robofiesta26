@@ -17,14 +17,14 @@ const pitch = {
 // A looping pulse-wave arrangement of Beethoven's public-domain Für Elise theme.
 // One beat is a sixteenth note; longer values preserve the theme's familiar pauses.
 const furElise: ChipNote[] = [
-  [pitch.E5,1],[pitch.DS5,1],[pitch.E5,1],[pitch.DS5,1],[pitch.E5,1],[pitch.B4,1],[pitch.D5,1],[pitch.C5,1],[pitch.A4,3,pitch.A2],[0,1],
-  [pitch.C4,1,pitch.A2],[pitch.E4,1],[pitch.A4,1],[pitch.B4,3,pitch.E3],[0,1],[pitch.E4,1,pitch.E3],[pitch.GS4,1],[pitch.B4,1],[pitch.C5,3,pitch.A2],[0,2],
-  [pitch.E5,1],[pitch.DS5,1],[pitch.E5,1],[pitch.DS5,1],[pitch.E5,1],[pitch.B4,1],[pitch.D5,1],[pitch.C5,1],[pitch.A4,3,pitch.A2],[0,1],
-  [pitch.C4,1,pitch.A2],[pitch.E4,1],[pitch.A4,1],[pitch.B4,3,pitch.E3],[0,1],[pitch.E4,1,pitch.E3],[pitch.C5,1],[pitch.B4,1],[pitch.A4,4,pitch.A2],[0,2],
-  [pitch.B4,1,pitch.E3],[pitch.C5,1],[pitch.D5,1],[pitch.E5,3,pitch.C3],[0,1],[pitch.G4,1,pitch.G2],[pitch.F5,1],[pitch.E5,1],[pitch.D5,3,pitch.G2],[0,1],
-  [pitch.F4,1,pitch.A2],[pitch.E5,1],[pitch.D5,1],[pitch.C5,3,pitch.A2],[0,1],[pitch.E4,1,pitch.E3],[pitch.D5,1],[pitch.C5,1],[pitch.B4,3,pitch.E3],[0,2],
-  [pitch.E5,1],[pitch.DS5,1],[pitch.E5,1],[pitch.DS5,1],[pitch.E5,1],[pitch.B4,1],[pitch.D5,1],[pitch.C5,1],[pitch.A4,3,pitch.A2],[0,1],
-  [pitch.C4,1,pitch.A2],[pitch.E4,1],[pitch.A4,1],[pitch.B4,3,pitch.E3],[0,1],[pitch.E4,1,pitch.E3],[pitch.C5,1],[pitch.B4,1],[pitch.A4,5,pitch.A2],[0,4],
+  [pitch.E5, 1], [pitch.DS5, 1], [pitch.E5, 1], [pitch.DS5, 1], [pitch.E5, 1], [pitch.B4, 1], [pitch.D5, 1], [pitch.C5, 1], [pitch.A4, 3, pitch.A2], [0, 1],
+  [pitch.C4, 1, pitch.A2], [pitch.E4, 1], [pitch.A4, 1], [pitch.B4, 3, pitch.E3], [0, 1], [pitch.E4, 1, pitch.E3], [pitch.GS4, 1], [pitch.B4, 1], [pitch.C5, 3, pitch.A2], [0, 2],
+  [pitch.E5, 1], [pitch.DS5, 1], [pitch.E5, 1], [pitch.DS5, 1], [pitch.E5, 1], [pitch.B4, 1], [pitch.D5, 1], [pitch.C5, 1], [pitch.A4, 3, pitch.A2], [0, 1],
+  [pitch.C4, 1, pitch.A2], [pitch.E4, 1], [pitch.A4, 1], [pitch.B4, 3, pitch.E3], [0, 1], [pitch.E4, 1, pitch.E3], [pitch.C5, 1], [pitch.B4, 1], [pitch.A4, 4, pitch.A2], [0, 2],
+  [pitch.B4, 1, pitch.E3], [pitch.C5, 1], [pitch.D5, 1], [pitch.E5, 3, pitch.C3], [0, 1], [pitch.G4, 1, pitch.G2], [pitch.F5, 1], [pitch.E5, 1], [pitch.D5, 3, pitch.G2], [0, 1],
+  [pitch.F4, 1, pitch.A2], [pitch.E5, 1], [pitch.D5, 1], [pitch.C5, 3, pitch.A2], [0, 1], [pitch.E4, 1, pitch.E3], [pitch.D5, 1], [pitch.C5, 1], [pitch.B4, 3, pitch.E3], [0, 2],
+  [pitch.E5, 1], [pitch.DS5, 1], [pitch.E5, 1], [pitch.DS5, 1], [pitch.E5, 1], [pitch.B4, 1], [pitch.D5, 1], [pitch.C5, 1], [pitch.A4, 3, pitch.A2], [0, 1],
+  [pitch.C4, 1, pitch.A2], [pitch.E4, 1], [pitch.A4, 1], [pitch.B4, 3, pitch.E3], [0, 1], [pitch.E4, 1, pitch.E3], [pitch.C5, 1], [pitch.B4, 1], [pitch.A4, 5, pitch.A2], [0, 4],
 ]
 
 const STEP_MS = 138
@@ -95,7 +95,7 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     } catch {
       /* Audio remains usable when storage is unavailable. */
     }
-    if (next) void context.resume().catch(()=>undefined)
+    if (next) void context.resume().catch(() => undefined)
     const now = context.currentTime
     master.gain.cancelScheduledValues(now)
     master.gain.setValueAtTime(master.gain.value, now)
@@ -114,10 +114,10 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     setEnabled(initialEnabled)
     const context = startEngine()
     if (masterRef.current) masterRef.current.gain.value = initialEnabled ? .12 : 0
-    if (initialEnabled) void context.resume().catch(()=>undefined)
+    if (initialEnabled) void context.resume().catch(() => undefined)
     const unlockAudio = () => {
       const current = contextRef.current
-      if (enabledRef.current && current?.state === 'suspended') void current.resume().catch(()=>undefined)
+      if (enabledRef.current && current?.state === 'suspended') void current.resume().catch(() => undefined)
     }
     const handlePointerOver = (event: PointerEvent) => {
       if (!enabledRef.current) return
@@ -141,7 +141,7 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       master.gain.cancelScheduledValues(now)
       master.gain.setValueAtTime(master.gain.value, now)
       master.gain.linearRampToValueAtTime(next ? .12 : 0, now + .12)
-      if (next) void contextRef.current.resume().catch(()=>undefined)
+      if (next) void contextRef.current.resume().catch(() => undefined)
     }
     document.addEventListener('pointerover', handlePointerOver)
     document.addEventListener('pointerdown', unlockAudio)

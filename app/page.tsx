@@ -119,12 +119,14 @@ export default function Page() {
       </div></Reveal>
       <div className="vault-stage"><Sparkles /><Vault /></div>
       <div className="prize-cards">
-        {prizeCategories.map((prize) => { const Icon = prizeIcons[prize.id]; return <article className="prize-card" key={prize.id}>
-          <Icon aria-hidden="true" />
-          <h3>{prize.label}</h3>
-          <p>{prize.summary}</p>
-          <small>{prize.detail}</small>
-        </article> })}
+        {prizeCategories.map((prize) => {
+          const Icon = prizeIcons[prize.id]; return <article className="prize-card" key={prize.id}>
+            <Icon aria-hidden="true" />
+            <h3>{prize.label}</h3>
+            <p>{prize.summary}</p>
+            <small>{prize.detail}</small>
+          </article>
+        })}
       </div>
     </section>
 
@@ -136,12 +138,14 @@ export default function Page() {
     <section id="faq" className="faq zone" aria-labelledby="faq-title">
       <div className="section-head"><p className="eyebrow dark">HELP DESK</p><h2 id="faq-title">SYSTEM DIAGNOSTICS</h2></div>
       <div className="faq-list">
-        {faqs.map((item, index) => { const answerId = `faq-answer-${index + 1}`; const isOpen = faq === index; return <div className="faq-item" key={item.question}>
-          <button type="button" onClick={() => setFaq(isOpen ? null : index)} aria-expanded={isOpen} aria-controls={answerId}>
-            <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.question}<ChevronDown className={isOpen ? 'flip' : ''} aria-hidden="true" />
-          </button>
-          {isOpen && <p id={answerId} className="faq-answer">{item.answer}</p>}
-        </div> })}
+        {faqs.map((item, index) => {
+          const answerId = `faq-answer-${index + 1}`; const isOpen = faq === index; return <div className="faq-item" key={item.question}>
+            <button type="button" onClick={() => setFaq(isOpen ? null : index)} aria-expanded={isOpen} aria-controls={answerId}>
+              <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.question}<ChevronDown className={isOpen ? 'flip' : ''} aria-hidden="true" />
+            </button>
+            {isOpen && <p id={answerId} className="faq-answer">{item.answer}</p>}
+          </div>
+        })}
       </div>
     </section>
 
