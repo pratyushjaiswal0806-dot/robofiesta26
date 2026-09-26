@@ -21,10 +21,10 @@ export function SiteFooter() {
           </Link>
           <p className="footer-description">A student-built robotics festival for curious minds, fearless builds, and the next generation of makers.</p>
           <nav className="footer-links" aria-label="Footer navigation">
-            <Link href="/">Home</Link>
-            <Link href="/events">Events</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/contact?subject=Registration%20support#transmission">Register</Link>
+            <Link href="/" prefetch={false}>Home</Link>
+            <Link href="/events" prefetch={false}>Events</Link>
+            <Link href="/contact" prefetch={false}>Contact</Link>
+            <Link href="/contact?subject=Registration%20support#transmission" prefetch={false}>Register</Link>
           </nav>
         </div>
 
@@ -37,7 +37,7 @@ export function SiteFooter() {
             <span className="footer-game-button footer-link-pending" role="img" aria-label="Instagram profile link coming soon"><Instagram aria-hidden="true"/><span>IG</span></span>
             <span className="footer-game-button footer-link-pending" role="img" aria-label="LinkedIn profile link coming soon"><Linkedin aria-hidden="true"/><span>IN</span></span>
             <span className="footer-game-button footer-link-pending" role="img" aria-label="YouTube profile link coming soon"><Youtube aria-hidden="true"/><span>YT</span></span>
-            <Link href="/contact" className="footer-game-button" aria-label="Contact RoboFiesta"><Mail aria-hidden="true"/><span>MAIL</span></Link>
+            <Link href="/contact" prefetch={false} className="footer-game-button" aria-label="Contact RoboFiesta"><Mail aria-hidden="true"/><span>MAIL</span></Link>
           </div>
         </div>
       </div>

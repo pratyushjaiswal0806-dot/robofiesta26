@@ -10,29 +10,44 @@ const EXIT_DURATION = 500;
 
 type LoaderPhase = "loading" | "exiting" | "done";
 
-function waitForWindowLoad() {
-  if (document.readyState === "complete") return Promise.resolve();
+function waitForWindowLoad(signal: AbortSignal) {
+  if (document.readyState === "complete" || signal.aborted) return Promise.resolve();
 
   return new Promise<void>((resolve) => {
-    window.addEventListener("load", () => resolve(), { once: true });
+    const complete = () => {
+      signal.removeEventListener("abort", cancel);
+      resolve();
+    };
+    const cancel = () => {
+      window.removeEventListener("load", complete);
+      resolve();
+    };
+    window.addEventListener("load", complete, { once: true });
+    signal.addEventListener("abort", cancel, { once: true });
   });
 }
 
-function waitForCriticalImages() {
+function waitForCriticalImages(signal: AbortSignal) {
   const images = Array.from(document.querySelectorAll<HTMLImageElement>('img[data-loader-critical="true"]'))
 
   return Promise.all(
     images.map(
       (image) =>
         new Promise<void>((resolve) => {
-          if (image.complete) {
+          if (image.complete || signal.aborted) {
             resolve();
             return;
           }
 
-          const complete = () => resolve();
+          const complete = () => {
+            image.removeEventListener("load", complete);
+            image.removeEventListener("error", complete);
+            signal.removeEventListener("abort", complete);
+            resolve();
+          };
           image.addEventListener("load", complete, { once: true });
           image.addEventListener("error", complete, { once: true });
+          signal.addEventListener("abort", complete, { once: true });
         }),
     ),
   );
@@ -59,6 +74,7 @@ export function SiteLoader() {
     let finished = false;
     let finishTimer: number | undefined;
     let exitTimer: number | undefined;
+    const abortController = new AbortController();
 
     const finish = () => {
       if (cancelled || finished) return;
@@ -82,13 +98,14 @@ export function SiteLoader() {
 
     const maxTimer = window.setTimeout(finish, MAX_WAIT);
     void Promise.all([
-      waitForWindowLoad(),
-      waitForCriticalImages(),
+      waitForWindowLoad(abortController.signal),
+      waitForCriticalImages(abortController.signal),
       document.fonts?.ready,
     ]).then(finish);
 
     return () => {
       cancelled = true;
+      abortController.abort();
       window.clearTimeout(maxTimer);
       if (finishTimer !== undefined) window.clearTimeout(finishTimer);
       if (exitTimer !== undefined) window.clearTimeout(exitTimer);

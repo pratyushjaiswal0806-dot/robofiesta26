@@ -18,32 +18,84 @@ export function SkyWorld() {
   useEffect(() => {
     let frame=0
     let previous=-1
+    let previousScrolled=false
+    let rangeDirty=true
+    let maximum=1
+    let pointerDirty=false
+    let pointerX=0
+    let pointerY=0
+    let viewportWidth=window.innerWidth
+    let viewportHeight=window.innerHeight
+    let fontsCancelled=false
     const scrollElement = document.scrollingElement || document.documentElement
+    const pointerFine=window.matchMedia('(pointer: fine)').matches
+
+    const measureRange=()=>{
+      maximum=Math.max(1,scrollElement.scrollHeight-scrollElement.clientHeight)
+      rangeDirty=false
+    }
+
     const update=() => {
       frame=0
-      const maximum=Math.max(1,scrollElement.scrollHeight-scrollElement.clientHeight)
+      if (rangeDirty) measureRange()
       const ratio=Math.min(1,Math.max(0,scrollElement.scrollTop/maximum))
       const percent=Math.round(ratio*100)
-      if (percent===previous) return
-      previous=percent
-      if (skyRef.current) skyRef.current.style.backgroundPositionY=`${percent}%`
-      if (readoutRef.current) readoutRef.current.textContent=`${String(percent).padStart(2,'0')}%`
-      energyRef.current?.setAttribute('aria-valuenow',String(percent))
-      energyRef.current?.setAttribute('aria-valuetext',`${percent}% of page explored`)
-      if (verticalFillRef.current) verticalFillRef.current.style.transform=`scaleY(${ratio})`
-      if (horizontalFillRef.current) horizontalFillRef.current.style.transform=`scaleX(${ratio})`
+      const scrolled=scrollElement.scrollTop>24
+      if (scrolled!==previousScrolled) {
+        previousScrolled=scrolled
+        document.body.classList.toggle('is-scrolled',scrolled)
+      }
+      if (percent!==previous) {
+        previous=percent
+        if (skyRef.current) skyRef.current.style.backgroundPositionY=`${percent}%`
+        if (readoutRef.current) readoutRef.current.textContent=`${String(percent).padStart(2,'0')}%`
+        energyRef.current?.setAttribute('aria-valuenow',String(percent))
+        energyRef.current?.setAttribute('aria-valuetext',`${percent}% of page explored`)
+        if (verticalFillRef.current) verticalFillRef.current.style.transform=`scaleY(${ratio})`
+        if (horizontalFillRef.current) horizontalFillRef.current.style.transform=`scaleX(${ratio})`
+      }
+      if (pointerDirty) {
+        pointerDirty=false
+        document.documentElement.style.setProperty('--pointer-x',String((pointerX/viewportWidth-.5)*2))
+        document.documentElement.style.setProperty('--pointer-y',String((pointerY/viewportHeight-.5)*2))
+      }
     }
     const schedule=()=>{if (!frame) frame=window.requestAnimationFrame(update)}
+    const handleResize=()=>{
+      rangeDirty=true
+      viewportWidth=window.innerWidth
+      viewportHeight=window.innerHeight
+      schedule()
+    }
+    const handlePointer=(event: PointerEvent)=>{
+      if (!pointerFine) return
+      pointerX=event.clientX
+      pointerY=event.clientY
+      pointerDirty=true
+      schedule()
+    }
     update()
     window.addEventListener('scroll',schedule,{passive:true})
-    window.addEventListener('resize',schedule,{passive:true})
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(schedule)
+    window.addEventListener('resize',handleResize,{passive:true})
+    if (pointerFine) window.addEventListener('pointermove',handlePointer,{passive:true})
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(()=>{
+      rangeDirty=true
+      schedule()
+    })
     observer?.observe(document.documentElement)
+    void document.fonts?.ready.then(()=>{
+      if (fontsCancelled) return
+      rangeDirty=true
+      schedule()
+    })
     return ()=>{
+      fontsCancelled=true
       window.cancelAnimationFrame(frame)
       window.removeEventListener('scroll',schedule)
-      window.removeEventListener('resize',schedule)
+      window.removeEventListener('resize',handleResize)
+      if (pointerFine) window.removeEventListener('pointermove',handlePointer)
       observer?.disconnect()
+      document.body.classList.remove('is-scrolled')
     }
   },[])
 

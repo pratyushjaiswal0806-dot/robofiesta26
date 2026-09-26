@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-const FONT_LINK_ID = "pixel-arc-loader-fonts";
+const FONT_LINK_ID = "robofiesta-fonts";
 const FONT_HREF =
-  "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block";
+  "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
 const FONT_FAMILY = '"Press Start 2P", ui-monospace, monospace';
 
 const DEPTH = 11;

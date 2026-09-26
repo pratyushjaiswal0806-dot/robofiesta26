@@ -25,6 +25,8 @@ const revealSelector = [
   '.event-card',
 ].join(',')
 
+const clickVectors = [[-22,-18],[22,-18],[-25,17],[25,17],[0,-28],[0,27]] as const
+
 export function MotionDirector() {
   const pathname=usePathname()
   const router=useRouter()
@@ -96,22 +98,11 @@ export function MotionDirector() {
 
   useEffect(() => {
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const finePointer=window.matchMedia('(pointer: fine)').matches
     if (reduced) return
-    let pointerFrame=0
-    let scrollFrame=0
-    const handlePointer=(event: PointerEvent) => {
-      if (!finePointer) return
-      window.cancelAnimationFrame(pointerFrame)
-      pointerFrame=window.requestAnimationFrame(() => {
-        document.documentElement.style.setProperty('--pointer-x',String((event.clientX/window.innerWidth-.5)*2))
-        document.documentElement.style.setProperty('--pointer-y',String((event.clientY/window.innerHeight-.5)*2))
-      })
-    }
+    const finePointer=window.matchMedia('(pointer: fine)').matches
     const handleClick=(event: PointerEvent) => {
       if (!finePointer) return
-      const vectors=[[-22,-18],[22,-18],[-25,17],[25,17],[0,-28],[0,27]]
-      vectors.forEach(([x,y],index) => {
+      clickVectors.forEach(([x,y],index) => {
         const spark=document.createElement('i')
         spark.className='click-pixel'
         spark.style.left=`${event.clientX}px`
@@ -123,25 +114,12 @@ export function MotionDirector() {
         spark.addEventListener('animationend',()=>spark.remove(),{once:true})
       })
     }
-    const updateScroll=()=>{
-      scrollFrame=0
-      document.body.classList.toggle('is-scrolled',window.scrollY>24)
-    }
-    const handleScroll=()=>{if (!scrollFrame) scrollFrame=window.requestAnimationFrame(updateScroll)}
     const handleVisibility=()=>document.body.classList.toggle('is-page-hidden',document.hidden)
-    window.addEventListener('pointermove',handlePointer,{passive:true})
     window.addEventListener('pointerdown',handleClick,{passive:true})
-    window.addEventListener('scroll',handleScroll,{passive:true})
     document.addEventListener('visibilitychange',handleVisibility)
-    updateScroll()
     return ()=>{
-      window.cancelAnimationFrame(pointerFrame)
-      window.cancelAnimationFrame(scrollFrame)
-      window.removeEventListener('pointermove',handlePointer)
       window.removeEventListener('pointerdown',handleClick)
-      window.removeEventListener('scroll',handleScroll)
       document.removeEventListener('visibilitychange',handleVisibility)
-      document.body.classList.remove('is-scrolled')
       document.body.classList.remove('is-page-hidden')
     }
   },[])

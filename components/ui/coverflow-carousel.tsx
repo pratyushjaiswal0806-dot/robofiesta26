@@ -61,7 +61,10 @@ export function CoverflowCarousel({
   const targetRef = React.useRef(0)
   const widthRef = React.useRef(0)
   const rafRef = React.useRef<number | null>(null)
+  const paintFrameRef = React.useRef<number | null>(null)
+  const measureFrameRef = React.useRef<number | null>(null)
   const dragRef = React.useRef<{ id: number; x: number; pos: number; v: number; t: number } | null>(null)
+  const selectedRef = React.useRef(0)
   const [selected, setSelected] = React.useState(0)
 
   const indexAt = React.useCallback((pos: number) => ((Math.round(pos) % count) + count) % count, [count])
@@ -88,10 +91,20 @@ export function CoverflowCarousel({
     })
   }, [count, depth, fade, falloff, gap, loop, rotate])
 
+  const queuePaint = React.useCallback(() => {
+    if (paintFrameRef.current !== null) return
+    paintFrameRef.current = requestAnimationFrame(() => {
+      paintFrameRef.current = null
+      paint()
+    })
+  }, [paint])
+
   const settle = React.useCallback((target: number) => {
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
     targetRef.current = target
-    setSelected(indexAt(target))
+    const nextIndex=indexAt(target)
+    selectedRef.current=nextIndex
+    setSelected(nextIndex)
     const step = () => {
       const remaining = target - posRef.current
       if (Math.abs(remaining) < 0.0004) {
@@ -133,8 +146,11 @@ export function CoverflowCarousel({
     drag.v = ((posRef.current - previous) / Math.max(now - drag.t, 1)) * 1000
     drag.t = now
     const index = indexAt(posRef.current)
-    if (index !== selected) setSelected(index)
-    paint()
+    if (index !== selectedRef.current) {
+      selectedRef.current=index
+      setSelected(index)
+    }
+    queuePaint()
   }
 
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -149,18 +165,31 @@ export function CoverflowCarousel({
     const frame = frameRef.current
     if (!frame) return
     const measure = () => {
+      measureFrameRef.current=null
       const card = cardRefs.current[0]
       if (!card) return
-      widthRef.current = card.offsetWidth
+      const width=card.offsetWidth
+      if (width===widthRef.current) return
+      widthRef.current=width
       paint()
     }
+    const scheduleMeasure=()=>{
+      if (measureFrameRef.current !== null) return
+      measureFrameRef.current=requestAnimationFrame(measure)
+    }
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(scheduleMeasure)
+    observer?.observe(frame)
     measure()
-    const observer = new ResizeObserver(measure)
-    observer.observe(frame)
-    return () => observer.disconnect()
+    return () => {
+      observer?.disconnect()
+      if (measureFrameRef.current !== null) cancelAnimationFrame(measureFrameRef.current)
+    }
   }, [paint])
 
-  React.useEffect(() => () => { if (rafRef.current !== null) cancelAnimationFrame(rafRef.current) }, [])
+  React.useEffect(() => () => {
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+    if (paintFrameRef.current !== null) cancelAnimationFrame(paintFrameRef.current)
+  }, [])
 
   if (!count) return null
   const active = slides[selected]
@@ -186,7 +215,7 @@ export function CoverflowCarousel({
         <p className="font-pixel text-[15px] uppercase tracking-tight text-[#2A1454]">{active.title}</p>
         {active.subtitle && <p className="mt-1 text-[13px] text-[#6B5B95]">{active.subtitle}</p>}
         {active.meta && active.meta.length > 0 && <dl className="mt-5 flex w-full max-w-[420px] flex-wrap justify-center gap-2 text-[11px]">{active.meta.map((row) => <div key={row.label} className="rounded-sm border-2 border-[#2A1454] bg-[#FFF6DC] px-2 py-1 shadow-[2px_2px_0_0_#2A1454]"><dt className="inline text-[#6B5B95]">{row.label}: </dt><dd className="inline font-semibold text-[#2A1454]">{row.value}</dd></div>)}</dl>}
-        {active.href && <Link href={active.href} className="carousel-detail-link">View full challenge <ChevronRight size={15} aria-hidden="true" /></Link>}
+        {active.href && <Link href={active.href} prefetch={false} className="carousel-detail-link">View full challenge <ChevronRight size={15} aria-hidden="true" /></Link>}
       </div>}
       {showPagination && <div className="mt-6 flex items-center justify-center gap-3">{slides.map((_, index) => <button key={index} type="button" aria-label={`Go to slide ${index + 1}`} aria-current={index === selected} onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); goTo(index) }} className={cn("size-3 rotate-45 border-2 border-[#2A1454] transition-colors", index === selected ? "bg-[#F5D565]" : "bg-transparent opacity-50")} />)}</div>}
     </div>
