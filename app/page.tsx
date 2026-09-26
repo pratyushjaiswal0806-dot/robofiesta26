@@ -1,15 +1,14 @@
-'use client'
-
-import { useState, type ReactNode } from 'react'
-import { ChevronDown, Cpu, Medal, Trophy } from 'lucide-react'
-import { fest, faqs, prizeCategories, sponsors, teamPlaceholders } from '@/lib/data'
+import type { ReactNode } from 'react'
+import { Cpu, Medal, Trophy } from 'lucide-react'
+import { fest, prizeCategories, sponsors, teamPlaceholders } from '@/lib/data'
 import { Navbar } from '@/components/Navbar'
 import { PixelButton } from '@/components/PixelButton'
 import { Countdown } from '@/components/Countdown'
 import { PixelAvatar, PixelCloud, PixelRobot, Sparkles, Vault } from '@/components/PixelArt'
 import { SchedulePanel } from '@/components/SchedulePanel'
 import { SkyWorld } from '@/components/SkyWorld'
-import EventCoverflow from '@/components/EventCoverflow'
+import { DeferredEventCoverflow } from '@/components/DeferredEventCoverflow'
+import { FAQPanel } from '@/components/FAQPanel'
 import { SiteFooter } from '@/components/SiteFooter'
 
 const Reveal = ({ children }: { children: ReactNode }) => <div className="reveal-block">{children}</div>
@@ -24,8 +23,6 @@ const featureCards = [
 ] as const
 
 export default function Page() {
-  const [faq, setFaq] = useState<number | null>(null)
-
   return <main className="game-world">
     <SkyWorld />
     <Navbar />
@@ -102,7 +99,7 @@ export default function Page() {
         <h2 id="events-title">CHOOSE YOUR ARENA</h2>
         <p>Pick a challenge. Assemble your crew. Let the machines do the talking.</p>
       </div>
-      <EventCoverflow />
+      <DeferredEventCoverflow />
       <div className="events-preview-action"><PixelButton href="/events">Enter Events Page</PixelButton><p>06 challenges online　·　rulebooks incoming</p></div>
     </section>
 
@@ -137,16 +134,7 @@ export default function Page() {
 
     <section id="faq" className="faq zone" aria-labelledby="faq-title">
       <div className="section-head"><p className="eyebrow dark">HELP DESK</p><h2 id="faq-title">SYSTEM DIAGNOSTICS</h2></div>
-      <div className="faq-list">
-        {faqs.map((item, index) => {
-          const answerId = `faq-answer-${index + 1}`; const isOpen = faq === index; return <div className="faq-item" key={item.question}>
-            <button type="button" onClick={() => setFaq(isOpen ? null : index)} aria-expanded={isOpen} aria-controls={answerId}>
-              <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.question}<ChevronDown className={isOpen ? 'flip' : ''} aria-hidden="true" />
-            </button>
-            {isOpen && <p id={answerId} className="faq-answer">{item.answer}</p>}
-          </div>
-        })}
-      </div>
+      <FAQPanel />
     </section>
 
     <section className="credits zone" aria-labelledby="credits-title">

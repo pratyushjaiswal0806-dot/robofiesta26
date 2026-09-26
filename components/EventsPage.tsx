@@ -36,7 +36,7 @@ function EventPoster({ event }: { event: EventRecord }) {
     <Link className="poster-link" href={`/events/${event.slug}`} aria-label={`Open ${event.title} mission brief`}>
       <div className="poster-frame">
         <div className="poster-sheet">
-          <Image src={event.artwork} alt={`Pixel-art poster for ${event.title}`} width={event.artworkWidth} height={event.artworkHeight} />
+          <Image src={event.artwork} alt={`Pixel-art poster for ${event.title}`} width={event.artworkWidth} height={event.artworkHeight} sizes="(max-width: 700px) 100vw, (max-width: 1200px) 50vw, 25vw" quality={85} />
         </div>
       </div>
       <h2>{event.title}</h2>

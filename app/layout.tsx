@@ -46,5 +46,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, colorScheme: 'light', themeColor: '#2A0B4F' }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en-IN"><body><StructuredData /><SoundProvider><SiteLoader /><MotionDirector />{children}</SoundProvider></body></html>
+  return <html lang="en-IN">
+    <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" />
+      <script id="robofiesta-loader-preflight" dangerouslySetInnerHTML={{ __html: `try { if (localStorage.getItem('robofiesta-pixel-arc-loader-seen') === '1') document.documentElement.style.setProperty('--robofiesta-loader-display', 'none') } catch {}` }} />
+    </head>
+    <body><StructuredData /><SoundProvider><SiteLoader /><MotionDirector />{children}</SoundProvider></body>
+  </html>
 }

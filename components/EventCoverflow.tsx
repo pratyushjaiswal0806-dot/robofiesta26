@@ -6,6 +6,8 @@ import { events } from '@/lib/data'
 const slides: CoverflowSlide[] = events.map((event) => ({
   src: event.artwork,
   alt: `Pixel-art poster for the ${event.title} event`,
+  width: event.artworkWidth,
+  height: event.artworkHeight,
   title: event.title,
   subtitle: `Level ${event.level} · ${event.description}`,
   href: `/events/${event.slug}`,

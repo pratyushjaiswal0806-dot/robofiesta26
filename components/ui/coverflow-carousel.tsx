@@ -3,6 +3,7 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect
@@ -10,6 +11,8 @@ const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect
 export interface CoverflowSlide {
   src: string
   alt: string
+  width?: number
+  height?: number
   title?: string
   subtitle?: string
   href?: string
@@ -169,8 +172,7 @@ export function CoverflowCarousel({
           <div className="relative select-none" style={{ height: "var(--cf-card)", transformStyle: "preserve-3d" }}>
             {slides.map((slide, index) => (
               <div key={index} ref={(node) => { cardRefs.current[index] = node }} role="button" tabIndex={index === selected ? 0 : -1} aria-roledescription="slide" aria-label={`${index + 1} of ${count}: ${slide.title ?? slide.alt}`} aria-current={index === selected} onClick={() => goTo(index)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); goTo(index) } }} className={cn("absolute left-1/2 top-0 aspect-square cursor-pointer overflow-hidden rounded-sm border-4 border-[#2A1454] bg-[#FFF6DC] shadow-[6px_6px_0_0_#2A1454] will-change-transform", cardClassName)} style={{ width: "var(--cf-card)" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={slide.src} alt={slide.alt} draggable={false} className="h-full w-full select-none object-cover [image-rendering:pixelated]" />
+                <Image src={slide.src} alt={slide.alt} width={slide.width ?? 512} height={slide.height ?? 512} sizes="(max-width: 640px) 148px, (max-width: 1200px) 22vw, 260px" quality={85} loading="lazy" draggable={false} className="h-full w-full select-none object-cover [image-rendering:pixelated]" />
               </div>
             ))}
           </div>

@@ -112,12 +112,10 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     }
     enabledRef.current = initialEnabled
     setEnabled(initialEnabled)
-    const context = startEngine()
-    if (masterRef.current) masterRef.current.gain.value = initialEnabled ? .12 : 0
-    if (initialEnabled) void context.resume().catch(() => undefined)
     const unlockAudio = () => {
-      const current = contextRef.current
-      if (enabledRef.current && current?.state === 'suspended') void current.resume().catch(() => undefined)
+      if (!enabledRef.current) return
+      const current = contextRef.current ?? startEngine()
+      if (current.state === 'suspended') void current.resume().catch(() => undefined)
     }
     const handlePointerOver = (event: PointerEvent) => {
       if (!enabledRef.current) return
@@ -154,6 +152,7 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       document.removeEventListener('pointerdown', handlePointerDown)
       document.removeEventListener('keydown', unlockAudio)
       window.removeEventListener('storage', handleStorage)
+      const context = contextRef.current
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = null
       sequenceStartedRef.current = false

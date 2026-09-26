@@ -18,8 +18,8 @@ function waitForWindowLoad() {
   });
 }
 
-function waitForImages() {
-  const images = Array.from(document.images);
+function waitForCriticalImages() {
+  const images = Array.from(document.querySelectorAll<HTMLImageElement>('img[data-loader-critical="true"]'))
 
   return Promise.all(
     images.map(
@@ -83,7 +83,7 @@ export function SiteLoader() {
     const maxTimer = window.setTimeout(finish, MAX_WAIT);
     void Promise.all([
       waitForWindowLoad(),
-      waitForImages(),
+      waitForCriticalImages(),
       document.fonts?.ready,
     ]).then(finish);
 
@@ -108,7 +108,7 @@ export function SiteLoader() {
 
   return (
     <div
-      className={`fixed inset-0 z-[2000] transition-opacity duration-500 ease-out ${
+      className={`site-loader fixed inset-0 z-[2000] transition-opacity duration-500 ease-out ${
         phase === "exiting"
           ? "pointer-events-none opacity-0"
           : "pointer-events-auto opacity-100"
