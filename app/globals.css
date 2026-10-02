@@ -208,11 +208,6 @@ h3 {
   align-items: center
 }
 
-.reg .pixel-button {
-  padding: 10px;
-  font-size: 8px
-}
-
 .menu,
 .mobile-menu {
   display: none
@@ -1140,8 +1135,7 @@ footer>b {
     font-size: 8px
   }
 
-  .nav-links,
-  .reg {
+  .nav-links {
     display: none
   }
 
@@ -2147,6 +2141,129 @@ footer {
   box-shadow: 0 0 0 var(--ink)
 }
 
+.nav-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px;
+  border: 2px solid var(--ink);
+  background: #f4c63f;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: 'Press Start 2P';
+  font-size: 7px;
+  line-height: 1;
+  transition: transform .14s, box-shadow .14s, background .14s
+}
+
+.nav-search:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink)
+}
+
+.nav-search:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink)
+}
+
+.nav-search:focus-visible {
+  outline: 3px solid #6c2bd9;
+  outline-offset: 3px
+}
+
+.nav-search-control {
+  position: relative
+}
+
+.nav-search-popover {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 320px;
+  padding: 10px;
+  border: 3px solid var(--ink);
+  background: #fff9e6;
+  box-shadow: 5px 5px 0 var(--ink)
+}
+
+.nav-search-popover label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--purple);
+  font-family: 'Press Start 2P';
+  font-size: 7px;
+  line-height: 1.4
+}
+
+.nav-search-field {
+  display: flex;
+  gap: 8px
+}
+
+.nav-search-field input {
+  min-width: 0;
+  flex: 1;
+  height: 38px;
+  padding: 0 10px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: #fffdf4;
+  color: var(--ink);
+  font: 600 13px 'DM Sans', sans-serif
+}
+
+.nav-search-field input::placeholder {
+  color: #6b5b95
+}
+
+.nav-search-field input:focus-visible,
+.nav-search-field button:focus-visible {
+  outline: 3px solid #6c2bd9;
+  outline-offset: 2px
+}
+
+.nav-search-field button {
+  display: grid;
+  width: 38px;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: #f4c63f;
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .14s, box-shadow .14s
+}
+
+.nav-search-field button:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink)
+}
+
+.nav-search-field button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink)
+}
+
+@media(max-width:760px) {
+  .nav-search {
+    padding: 6px
+  }
+
+  .nav-search span {
+    display: none
+  }
+
+  .nav-search-popover {
+    position: fixed;
+    top: 74px;
+    right: 9px;
+    width: min(320px, calc(100vw - 18px))
+  }
+}
+
 .event-card,
 .prize-card,
 .feature,
@@ -3149,7 +3266,7 @@ body {
 }
 
 .event-coverflow-loading {
-  min-height: clamp(440px, 41vw, 560px);
+  min-height: clamp(620px, 54vw, 780px);
   border-top: 4px solid var(--ink);
   border-bottom: 4px solid var(--ink);
   background: #fff6dc;
@@ -3759,7 +3876,7 @@ body {
 .poster-frame {
   position: relative;
   padding: 13px;
-  background: #6c2bd9;
+  background: var(--poster-frame-color, #6c2bd9);
   border: 5px solid var(--ink);
   box-shadow: 12px 12px 0 var(--ink);
   clip-path: polygon(9px 0, calc(100% - 9px) 0, calc(100% - 9px) 5px, 100% 5px, 100% calc(100% - 9px), calc(100% - 9px) calc(100% - 9px), calc(100% - 9px) 100%, 9px 100%, 9px calc(100% - 5px), 0 calc(100% - 5px), 0 9px, 9px 9px);
@@ -3781,18 +3898,6 @@ body {
   object-fit: cover;
   image-rendering: pixelated;
   transition: transform .24s steps(4, end), filter .2s ease
-}
-
-.poster-entry:nth-child(2n) .poster-frame {
-  background: #9be7ff
-}
-
-.poster-entry:nth-child(3n) .poster-frame {
-  background: #ff8b78
-}
-
-.poster-entry:nth-child(4n) .poster-frame {
-  background: #f4c63f
 }
 
 .poster-entry h2 {
@@ -3867,6 +3972,31 @@ body {
   margin-bottom: 64px
 }
 
+.poster-search-result,
+.poster-search-empty {
+  width: min(100%, 680px);
+  margin: -30px auto 42px;
+  text-align: center
+}
+
+.poster-search-result {
+  font-family: 'Press Start 2P';
+  font-size: 9px;
+  line-height: 1.8;
+  color: var(--purple)
+}
+
+.poster-search-empty {
+  padding: 24px;
+  border: 3px solid var(--ink);
+  background: #fffdf4;
+  box-shadow: 5px 5px 0 var(--ink);
+  font-family: 'Press Start 2P';
+  font-size: 9px;
+  line-height: 1.8;
+  color: var(--ink)
+}
+
 .poster-grid {
   width: 100%;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3912,6 +4042,12 @@ body {
 
   .poster-page-head {
     margin-bottom: 48px
+  }
+
+  .poster-search-result,
+  .poster-search-empty {
+    margin: -20px auto 32px;
+    font-size: 8px
   }
 
   .poster-grid {
@@ -4276,10 +4412,6 @@ body {
 
   .nav-links {
     gap: 11px
-  }
-
-  .reg {
-    display: none
   }
 
   .contact-hero {
@@ -5750,7 +5882,6 @@ button:disabled {
   }
 }
 
-/* The poster wall now carries the same scan-friendly facts as the home carousel. */
 .poster-page-head>p:last-child {
   max-width: 620px;
   margin: 22px auto 0;
@@ -5774,35 +5905,6 @@ button:disabled {
   outline-offset: 5px;
   transform: translateY(-6px);
   box-shadow: 12px 14px 0 var(--color-ink)
-}
-
-.poster-meta {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  margin: 15px 8px 0
-}
-
-.poster-meta div {
-  min-width: 0;
-  padding: 8px 6px;
-  background: var(--color-ivory);
-  border: 2px solid var(--color-ink);
-  box-shadow: 2px 2px 0 var(--color-purple)
-}
-
-.poster-meta dt {
-  font-family: var(--font-pixel);
-  font-size: 6px;
-  color: var(--color-purple)
-}
-
-.poster-meta dd {
-  margin: 6px 0 0;
-  overflow-wrap: anywhere;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.2
 }
 
 .poster-cta {
@@ -6420,7 +6522,6 @@ button:disabled {
 
 @media(min-width:761px) and (max-width:1200px) {
 
-  .poster-page,
   .event-detail-page,
   .contact-hero,
   .contact-zone {
@@ -6441,24 +6542,6 @@ button:disabled {
 @media(max-width:760px) {
   .poster-page-head>p:last-child {
     font-size: 15px
-  }
-
-  .poster-meta {
-    grid-template-columns: 1fr;
-    margin-left: 2px;
-    margin-right: 2px
-  }
-
-  .poster-meta div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px
-  }
-
-  .poster-meta dd {
-    margin: 0;
-    text-align: right
   }
 
   .poster-cta {

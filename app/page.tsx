@@ -78,7 +78,7 @@ export default function Page() {
         <p>RoboFiesta’26 brings together the sharpest student builders for three days of robotics, innovation, competition, workshops, and high-voltage ideas.</p>
         <div className="stat-row">
           {[
-            ['⚙', '06 Arena Challenges'],
+            ['⚙', '17 Arena Challenges'],
             ['♛', 'Prize Pool TBA'],
             ['▦', '3 Days of Innovation'],
             ['⌘', '1000+ Participants'],
@@ -100,7 +100,7 @@ export default function Page() {
         <p>Pick a challenge. Assemble your crew. Let the machines do the talking.</p>
       </div>
       <DeferredEventCoverflow />
-      <div className="events-preview-action"><PixelButton href="/events">Enter Events Page</PixelButton><p>06 challenges online　·　rulebooks incoming</p></div>
+      <div className="events-preview-action"><PixelButton href="/events">Enter Events Page</PixelButton><p>17 challenges online　·　details incoming</p></div>
     </section>
 
     <section id="schedule" className="schedule zone" aria-labelledby="schedule-title">

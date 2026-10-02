@@ -58,7 +58,7 @@ export function StructuredData() {
           '@type': 'EducationalAudience',
           educationalRole: 'student',
         },
-        keywords: ['robotics festival', 'college robotics competition', 'student robotics', 'Robo Wars', 'Micromouse', 'drone racing', 'Bangalore'],
+        keywords: ['college festival', 'student competition', 'BGMI', 'Robo Race', 'Robo Sumo', 'Waste Drift', 'Bangalore'],
       },
       {
         '@type': 'ItemList',

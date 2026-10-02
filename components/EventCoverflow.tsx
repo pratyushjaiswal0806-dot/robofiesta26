@@ -21,7 +21,7 @@ const slides: CoverflowSlide[] = events.map((event) => ({
 export default function EventCoverflow() {
   return (
     <div className="mb-20 w-full overflow-hidden border-y-4 border-[#2A1454] bg-[#FFF6DC]/90 py-6 shadow-[0_7px_0_0_#2A1454] [background-image:radial-gradient(#2A145433_1px,transparent_1px)] [background-size:16px_16px]">
-      <CoverflowCarousel slides={slides} />
+      <CoverflowCarousel slides={slides} cardAspectRatio={1123 / 794} />
     </div>
   )
 }

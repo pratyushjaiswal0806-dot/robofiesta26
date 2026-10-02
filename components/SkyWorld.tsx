@@ -8,7 +8,7 @@ const sparkles = [
   ['5%','61%','s3'],['92%','72%','s1'],['16%','82%','s2'],['78%','91%','s3'],
 ]
 
-export function SkyWorld() {
+export function SkyWorld({ showProgress = true }: { showProgress?: boolean }) {
   const skyRef=useRef<HTMLDivElement>(null)
   const readoutRef=useRef<HTMLSpanElement>(null)
   const verticalFillRef=useRef<HTMLElement>(null)
@@ -111,11 +111,11 @@ export function SkyWorld() {
       <i className="circuit-glyph glyph-two">⚙</i>
       <i className="circuit-glyph glyph-three">▦</i>
     </div>
-    <div ref={energyRef} className="energy" role="progressbar" aria-label="Page scroll progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
+    {showProgress && <div ref={energyRef} className="energy" role="progressbar" aria-label="Page scroll progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
       <span ref={readoutRef} className="energy-readout">00%</span>
       <b className="energy-label">PROGRESS</b>
       <div className="energy-track"><i ref={verticalFillRef} className="energy-fill desktop"/><i ref={horizontalFillRef} className="energy-fill mobile"/></div>
       <small>LVL</small>
-    </div>
+    </div>}
   </>
 }

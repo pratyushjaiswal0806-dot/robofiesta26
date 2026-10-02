@@ -27,6 +27,7 @@ export interface CoverflowCarouselProps {
   falloff?: number
   fade?: number
   cardWidth?: string
+  cardAspectRatio?: number
   gap?: number
   loop?: boolean
   showCaption?: boolean
@@ -45,6 +46,7 @@ export function CoverflowCarousel({
   falloff = 0.56,
   fade = 0.1,
   cardWidth = "clamp(148px, 22vw, 260px)",
+  cardAspectRatio = 1,
   gap = 0.05,
   loop = true,
   showCaption = true,
@@ -128,6 +130,7 @@ export function CoverflowCarousel({
   const nudge = React.useCallback((by: number) => settle(clamp(Math.round(targetRef.current) + by)), [clamp, settle])
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.target instanceof Element && event.target.closest('a, button')) return
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
     rafRef.current = null
     event.currentTarget.setPointerCapture(event.pointerId)
@@ -193,23 +196,31 @@ export function CoverflowCarousel({
 
   if (!count) return null
   const active = slides[selected]
+  const trackHeight = `calc(var(--cf-card) * ${cardAspectRatio} + 2rem)`
 
   return (
     <div className={cn("w-full", className)} style={{ ["--cf-card" as string]: cardWidth }} role="region" aria-roledescription="carousel" aria-label={label}>
       <div className="relative">
         <div ref={frameRef} tabIndex={0} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endDrag} onPointerCancel={endDrag} onKeyDown={(event) => { if (event.key === "ArrowLeft") { event.preventDefault(); nudge(-1) } else if (event.key === "ArrowRight") { event.preventDefault(); nudge(1) } }} className="cursor-grab overflow-hidden py-10 outline-none ring-[#2A1454] focus-visible:ring-2 active:cursor-grabbing" style={{ perspective: `calc(var(--cf-card) * ${perspective})`, touchAction: "pan-y" }}>
-          <div className="relative select-none" style={{ height: "var(--cf-card)", transformStyle: "preserve-3d" }}>
-            {slides.map((slide, index) => (
-              <div key={index} ref={(node) => { cardRefs.current[index] = node }} role="button" tabIndex={index === selected ? 0 : -1} aria-roledescription="slide" aria-label={`${index + 1} of ${count}: ${slide.title ?? slide.alt}`} aria-current={index === selected} onClick={() => goTo(index)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); goTo(index) } }} className={cn("absolute left-1/2 top-0 aspect-square cursor-pointer overflow-hidden rounded-sm border-4 border-[#2A1454] bg-[#FFF6DC] shadow-[6px_6px_0_0_#2A1454] will-change-transform", cardClassName)} style={{ width: "var(--cf-card)" }}>
-                <Image src={slide.src} alt={slide.alt} width={slide.width ?? 512} height={slide.height ?? 512} sizes="(max-width: 640px) 148px, (max-width: 1200px) 22vw, 260px" quality={85} loading="lazy" draggable={false} className="h-full w-full select-none object-cover [image-rendering:pixelated]" />
+          <div className="relative select-none" style={{ height: trackHeight, transformStyle: "preserve-3d" }}>
+            {slides.map((slide, index) => {
+              const posterWidth = slide.width ?? 512
+              const posterHeight = slide.height ?? 512
+              const posterFrame = <div className={cn("w-full overflow-hidden rounded-sm border-4 border-[#2A1454] bg-[#FFF6DC] shadow-[6px_6px_0_0_#2A1454]", cardClassName)} style={{ aspectRatio: `${posterWidth} / ${posterHeight}` }}>
+                <Image src={slide.src} alt={slide.alt} width={posterWidth} height={posterHeight} sizes="(max-width: 640px) 148px, (max-width: 1200px) 22vw, 260px" quality={85} loading="lazy" draggable={false} className="block h-full w-full select-none object-cover [image-rendering:pixelated]" />
               </div>
-            ))}
+              const posterTitle = slide.title && <span className="mt-2 block w-full text-center font-pixel text-[10px] leading-4 tracking-tight text-[#2A1454]">{slide.title}</span>
+              const poster = slide.href ? <Link href={slide.href} prefetch={false} aria-label={`Open ${slide.title ?? slide.alt}`} className="flex w-full flex-col items-center">{posterFrame}{posterTitle}</Link> : <div role="button" tabIndex={index === selected ? 0 : -1} aria-label={`${index + 1} of ${count}: ${slide.title ?? slide.alt}`} aria-current={index === selected} onClick={() => goTo(index)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); goTo(index) } }} className="flex w-full cursor-pointer flex-col items-center">{posterFrame}{posterTitle}</div>
+              return <div key={index} ref={(node) => { cardRefs.current[index] = node }} className="absolute left-1/2 top-0 flex will-change-transform" style={{ width: "var(--cf-card)", height: trackHeight }} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${count}: ${slide.title ?? slide.alt}`}>
+                {poster}
+              </div>
+            })}
           </div>
         </div>
-        {showNavigation && <>
-          <button type="button" aria-label="Previous slide" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(-1) }} className="absolute left-3 top-1/2 z-[200] -translate-y-1/2 rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-[55%] hover:shadow-[5px_5px_0_0_#2A1454] active:translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronLeft aria-hidden="true" className="size-5" strokeWidth={3} /></button>
-          <button type="button" aria-label="Next slide" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(1) }} className="absolute right-3 top-1/2 z-[200] -translate-y-1/2 rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-[55%] hover:shadow-[5px_5px_0_0_#2A1454] active:-translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronRight aria-hidden="true" className="size-5" strokeWidth={3} /></button>
-        </>}
+        {showNavigation && <div className="pointer-events-none absolute inset-0 z-[300] flex items-center justify-between px-3">
+          <button type="button" aria-label="Previous slide" onPointerDownCapture={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(-1) }} className="pointer-events-auto rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#2A1454] active:translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronLeft aria-hidden="true" className="size-5" strokeWidth={3} /></button>
+          <button type="button" aria-label="Next slide" onPointerDownCapture={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); nudge(1) }} className="pointer-events-auto rounded-sm border-4 border-[#2A1454] bg-[#F5D565] p-2 text-[#2A1454] shadow-[3px_3px_0_0_#2A1454] transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#2A1454] active:-translate-x-[2px] active:shadow-[1px_1px_0_0_#2A1454]"><ChevronRight aria-hidden="true" className="size-5" strokeWidth={3} /></button>
+        </div>}
       </div>
       {showCaption && active?.title && <div key={selected} aria-live="polite" className="mt-4 flex flex-col items-center px-6 text-center duration-300 animate-in fade-in">
         <p className="font-pixel text-[15px] uppercase tracking-tight text-[#2A1454]">{active.title}</p>

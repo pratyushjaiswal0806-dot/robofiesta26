@@ -7,19 +7,30 @@
 - Dates: 16–18 October 2026
 - Venue: RVITM, Bangalore, Karnataka, India
 - Organizer: RVITM Robotics Community
-- Audience: student builders, coders, creators, and robotics teams
-- Format: in-person college robotics festival
+- Audience: student builders, coders, creators, players, and teams
+- Format: in-person college festival
 - Prize details: TBA
 - Registration fee: TBA; consult the official rulebooks when published
 
-## Competition arenas
+## Events
 
-- Robo Wars — compact battle robots; teams of 2–5; advanced
-- Micromouse Maze — autonomous maze navigation; teams of 1–3; intermediate
-- Autonomous Rover — sensor-based terrain navigation; teams of 2–4; advanced
-- Waste Drift — build-and-race drift challenge; teams of 1–3 builders; intermediate
-- Line Follower X — speed and precision track challenge; teams of 1–3; beginner
-- Innovation Expo — student prototype showcase; teams of 1–4; beginner
+- BGMI — details coming soon
+- Bug Squash — details coming soon
+- Chess — details coming soon
+- Clash Royale — details coming soon
+- Code Battle — details coming soon
+- CTF — details coming soon
+- FIFA — details coming soon
+- Free Fire — details coming soon
+- IPL Auction — details coming soon
+- Minecraft — details coming soon
+- Moneyball — details coming soon
+- Robo Race — details coming soon
+- Robo Sumo — details coming soon
+- Save the Egg — details coming soon
+- Tech Auction — details coming soon
+- Treasure Hunt — details coming soon
+- Waste Drift — details coming soon
 
 ## Key page sections
 
