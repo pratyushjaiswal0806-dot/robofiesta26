@@ -8,7 +8,7 @@ import type { EggContent } from './eggTypes'
 import { fetchEggs } from './eggClient'
 import { useSound } from '@/components/SoundSystem'
 import type { RevealSource } from './EggReveal'
-import { playEggPoke, playEggUnlock } from './eggSounds'
+import { playEggPoke } from './eggSounds'
 import { OPEN_VAULT_EVENT, collectEgg, getEggServerSnapshot, getEggSnapshot, resetEggs, subscribeEggs } from './eggStore'
 
 // The card UI and canvas renderer only download once someone actually finds an egg.
@@ -47,7 +47,7 @@ const isTypingTarget = (target: EventTarget | null) => target instanceof HTMLEle
  */
 export function EasterEggs() {
   const collection = useSyncExternalStore(subscribeEggs, getEggSnapshot, getEggServerSnapshot)
-  const { enabled: soundEnabled } = useSound()
+  const { enabled: soundEnabled, playCardSong, stopCardSong } = useSound()
   const pathname = usePathname()
   const [reveal, setReveal] = useState<Reveal | null>(null)
   const [vaultOpen, setVaultOpen] = useState(false)
@@ -56,14 +56,18 @@ export function EasterEggs() {
   busyRef.current = Boolean(reveal) || vaultOpen
   soundRef.current = soundEnabled
 
+  useEffect(() => {
+    if (!reveal) stopCardSong()
+  }, [reveal, stopCardSong])
+
   const unlock = useCallback(async (entry: EggManifestEntry) => {
     const [egg] = await fetchEggs([entry.id])
     if (!egg) return
     const { isNew } = collectEgg(entry.id, entry.number)
-    if (soundRef.current) playEggUnlock()
+    playCardSong()
     setVaultOpen(false)
     setReveal({ egg, isNew, source: 'hunt' })
-  }, [])
+  }, [playCardSong])
 
   useEffect(() => {
     const taps = new Map<string, { count: number; last: number }>()

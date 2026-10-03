@@ -32,11 +32,3 @@ export function playEggPoke(step: number) {
   if (!audio) return
   tone(audio, 440 * 2 ** (step * 2 / 12), 0, .08, 'square', .05)
 }
-
-export function playEggUnlock() {
-  const audio = getContext()
-  if (!audio) return
-  ;[523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((frequency, index) => tone(audio, frequency, index * .085, .14))
-  ;[1046.5, 1318.5, 1568].forEach((frequency) => tone(audio, frequency, .48, .55, 'square', .045))
-  tone(audio, 130.81, .48, .6, 'triangle', .12)
-}

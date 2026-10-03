@@ -1,4 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" shape-rendering="crispEdges">
-<rect width="512" height="512" fill="#C9F2FF"/><path fill="#FFF6DC" d="M32 112h112v-24h72v48h-32v24H32zm304 224h112v-24h40v64H336z"/><path fill="#2A1454" d="M152 224h208v72H152zM92 184h128v28H92zm200 0h128v28H292z"/><path fill="#7C3AED" d="M180 240h152v40H180z"/><path fill="#FF3CAC" d="M232 252h48v16h-48z"/><path fill="#2A1454" d="M108 164h24v48h-24zm272 0h24v48h-24zM132 296h36v48h-36zm212 0h36v48h-36z"/><path fill="#F5D565" d="M80 136h80v20H80zm272 0h80v20h-80z"/>
-<path fill="none" stroke="#FF7A3D" stroke-width="20" d="M60 272h72v128h72m248-128h-72v128h-72"/><path fill="#2A1454" d="M48 260h24v24H48zm392 0h24v24h-24z"/>
-</svg>
