@@ -1,5 +1,6 @@
 import { Instagram, Linkedin, Mail, Youtube } from 'lucide-react'
 import Link from 'next/link'
+import { EggVaultButton } from '@/components/easter-eggs/EggVaultButton'
 
 export function SiteFooter() {
   return <footer id="contact" className="site-footer">
@@ -45,6 +46,7 @@ export function SiteFooter() {
       <div className="footer-console-bottom">
         <b className="maker-badge"><i aria-hidden="true"/>MADE FOR MAKERS</b>
         <span className="footer-location">RVITM ROBOTICS COMMUNITY <i aria-hidden="true">///</i> BANGALORE, INDIA</span>
+        <EggVaultButton />
         <span className="footer-copyright">© 2026 ROBOFIESTA</span>
       </div>
     </div>

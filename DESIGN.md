@@ -358,7 +358,7 @@ The navigation is a cream physical console floating near the top of the viewport
 - mini-bot brand mark;
 - primary links;
 - sound toggle;
-- persistent registration action on wide layouts;
+- event-search action on every layout;
 - compact hamburger control on mobile.
 
 On scroll it becomes slightly shorter, moves upward, narrows a little, and gains a soft external drop shadow while preserving the hard pixel panel shadow.
@@ -405,12 +405,15 @@ Keep these effects sparse. They should read as environmental feedback, not as co
 
 ### 7.6 Sound
 
-The sound control plays a looping, browser-unlocked 8-bit arrangement of the public-domain Für Elise theme:
+The sound control plays a rotating, browser-unlocked 8-bit playlist of public-domain classical motifs:
 
+- Mozart: Turkish March, followed by Beethoven's Für Elise and Ode to Joy;
+- Bach: Toccata and Fugue in D Minor;
+- Vivaldi: Spring;
 - square-wave melody with triangle-wave bass;
 - starts only after user interaction required by browser audio policies;
-- button label and icon expose the current on/off state;
-- hover and press tones apply to buttons when sound is enabled;
+- button label, icon, and tooltip expose the current music state and track;
+- hover and press tones apply to buttons independently of the music toggle;
 - preference persists under `robofiesta-sound-enabled`;
 - storage failures do not block the control.
 

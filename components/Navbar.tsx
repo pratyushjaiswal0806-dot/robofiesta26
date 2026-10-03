@@ -19,7 +19,7 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState('')
   const pathname = usePathname()
   const router = useRouter()
-  const { enabled, toggle } = useSound()
+  const { enabled, toggle, trackTitle } = useSound()
   const isActive = (href: string) => !href.includes('#') && pathname === href
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export function Navbar() {
       <Link href="/" prefetch={false} className="brand"><span className="mini-bot" aria-hidden="true">● ●</span> ROBOFIESTA’26</Link>
       <div className="nav-links">{links.map(([label, href]) => <Link key={href} href={href} prefetch={false} className={isActive(href) ? 'active' : ''} aria-current={isActive(href) ? 'page' : undefined}>{label}</Link>)}</div>
       <div className="nav-actions">
-        <button type="button" onClick={toggle} aria-label={`${enabled ? 'Pause' : 'Play'} Für Elise 8-bit soundtrack`} title="Für Elise — 8-bit soundtrack" aria-pressed={enabled} className={`sound ${enabled ? 'is-on' : ''}`}>{enabled ? <Volume2 size={16} aria-hidden="true" /> : <VolumeX size={16} aria-hidden="true" />}<span>{enabled ? 'ON' : 'OFF'}</span></button>
+        <button type="button" onClick={toggle} aria-label={`${enabled ? 'Pause' : 'Play'} 8-bit music: ${trackTitle}`} title={`8-bit music: ${trackTitle}`} aria-pressed={enabled} className={`sound ${enabled ? 'is-on' : ''}`}>{enabled ? <Volume2 size={16} aria-hidden="true" /> : <VolumeX size={16} aria-hidden="true" />}<span>{enabled ? 'ON' : 'OFF'}</span></button>
         <div className="nav-search-control">
           <button type="button" className="nav-search" aria-label="Search events" aria-expanded={searchOpen} aria-controls="event-search-popover" onClick={() => setSearchOpen((value) => !value)}><Search size={16} aria-hidden="true" /><span>SEARCH</span></button>
           {searchOpen && <form id="event-search-popover" className="nav-search-popover" role="search" onSubmit={submitEventSearch}>

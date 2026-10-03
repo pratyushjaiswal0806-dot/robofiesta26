@@ -46,7 +46,6 @@ export function EventDetailPage({ event }: { event: EventRecord }) {
           <h2 id="rules-title">HOW TO PLAY</h2>
           <ol>{event.rules.map((rule, index) => <li key={rule}><b>{String(index + 1).padStart(2, '0')}</b><span>{rule}</span></li>)}</ol>
         </section>
-        <aside className="rulebook-note"><span className="status-dot" aria-hidden="true" /><strong>RULEBOOK SIGNAL</strong><p>Preview brief loaded. Official specifications, fees, judging, and safety checks will be added here when the organiser release is locked.</p><Link href="/contact?subject=Rulebook%20question#transmission" prefetch={false}>Ask the comms bay →</Link></aside>
       </div>
     </section>
 

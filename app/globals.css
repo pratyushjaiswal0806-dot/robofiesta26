@@ -6138,7 +6138,7 @@ button:disabled {
   width: min(100%, 980px);
   margin: 78px auto 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(230px, .7fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 25px;
   align-items: start
 }
@@ -7219,5 +7219,707 @@ button:disabled {
 
   .site-footer .footer-game-button.footer-link-pending:after {
     font-size: 3px
+  }
+}
+
+/* Easter eggs — hidden triggers, reveal card, and egg vault */
+html.egg-dialog-open {
+  overflow: hidden
+}
+
+/* Let knocks reach the moon through the non-interactive hero wrappers. */
+.hero-content,
+.hero-intro,
+.hero-title-parallax {
+  pointer-events: none
+}
+
+.mascot-float,
+.hero-copy-parallax {
+  pointer-events: auto
+}
+
+.lost-blip:before {
+  content: "";
+  position: absolute;
+  inset: -16px
+}
+
+.pixel-nudge {
+  animation: eggPoke .4s steps(4, end) !important
+}
+
+@keyframes eggPoke {
+  0% { transform: translate(0, 0) rotate(0) }
+  25% { transform: translate(-4px, 2px) rotate(-5deg) }
+  50% { transform: translate(4px, -3px) rotate(4deg) }
+  75% { transform: translate(-2px, 0) rotate(-2deg) }
+  100% { transform: translate(0, 0) rotate(0) }
+}
+
+.egg-overlay {
+  position: fixed;
+  z-index: 1050;
+  inset: 0;
+  display: flex;
+  padding: 32px 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(24, 6, 47, .9);
+  animation: eggOverlayIn .24s steps(4, end) both
+}
+
+.egg-overlay:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .1;
+  background-image: radial-gradient(#fff 1px, transparent 1.5px), repeating-linear-gradient(0deg, transparent 0 3px, #000 3px 4px);
+  background-size: 8px 8px, 100% 4px
+}
+
+@keyframes eggOverlayIn {
+  from { opacity: 0 }
+}
+
+.egg-dialog {
+  position: relative;
+  width: 100%;
+  margin: auto;
+  outline: none
+}
+
+.egg-close {
+  position: fixed;
+  z-index: 3;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: var(--color-orange);
+  border: 3px solid var(--color-ink);
+  box-shadow: 4px 4px 0 #0d0320;
+  color: var(--color-ink)
+}
+
+.egg-close svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 3
+}
+
+.egg-close:hover {
+  background: #ffa596
+}
+
+.egg-close:focus-visible,
+.egg-action:focus-visible,
+.egg-slot button:focus-visible,
+.egg-vault-foot button:focus-visible,
+.egg-vault-chip:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 3px
+}
+
+/* Reveal */
+.egg-reveal .egg-dialog {
+  max-width: 980px
+}
+
+.egg-reveal-rays {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 200vmax;
+  height: 200vmax;
+  margin: -100vmax 0 0 -100vmax;
+  pointer-events: none;
+  background: repeating-conic-gradient(rgba(244, 198, 63, .16) 0 7.5deg, transparent 7.5deg 15deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0 18%, transparent 52%);
+  mask-image: radial-gradient(circle, #000 0 18%, transparent 52%);
+  animation: eggRays 40s steps(160) infinite
+}
+
+@keyframes eggRays {
+  to { transform: rotate(360deg) }
+}
+
+.egg-confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden
+}
+
+.egg-confetti i {
+  position: absolute;
+  top: -24px;
+  left: var(--confetti-x);
+  width: var(--confetti-size);
+  height: var(--confetti-size);
+  background: var(--confetti-color);
+  box-shadow: 2px 2px 0 var(--color-ink);
+  animation: eggConfetti var(--confetti-duration) steps(30) var(--confetti-delay) both
+}
+
+@keyframes eggConfetti {
+  from { transform: translate(0, 0) rotate(0) }
+  to { transform: translate(var(--confetti-drift), 110vh) rotate(540deg) }
+}
+
+.egg-reveal-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 420px);
+  grid-template-areas: "card head" "card info";
+  justify-content: center;
+  align-items: center;
+  column-gap: 64px;
+  row-gap: 22px
+}
+
+.egg-reveal-head {
+  grid-area: head;
+  align-self: end
+}
+
+.egg-reveal-kicker {
+  margin: 0;
+  color: var(--color-blue);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  letter-spacing: -.04em
+}
+
+.egg-reveal-banner {
+  margin: 14px 0 0;
+  color: var(--color-yellow);
+  font-size: clamp(22px, 3.3vw, 36px);
+  line-height: 1.35;
+  letter-spacing: -.06em;
+  text-shadow: 3px 0 #19052d, -3px 0 #19052d, 0 -3px #19052d, 0 4px #19052d, 5px 7px #ff5f6d;
+  animation: eggBanner .6s steps(6, end) .15s both
+}
+
+@keyframes eggBanner {
+  0% { opacity: 0; transform: scale(2.2) }
+  60% { opacity: 1; transform: scale(.94) }
+  100% { opacity: 1; transform: scale(1) }
+}
+
+.egg-flip {
+  grid-area: card;
+  width: min(380px, 80vw, calc((100vh - 72px) * .714));
+  width: min(380px, 80vw, calc((100dvh - 72px) * .714));
+  aspect-ratio: 720 / 1008;
+  perspective: 1600px
+}
+
+.egg-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: eggFlip 1.25s cubic-bezier(.2, .9, .25, 1.15) .2s both
+}
+
+.from-vault .egg-flip-inner {
+  animation: eggPop .36s steps(6, end) both
+}
+
+@keyframes eggFlip {
+  0% { transform: translateY(45vh) rotateY(180deg) scale(.35) }
+  42% { transform: translateY(0) rotateY(180deg) scale(1.04) }
+  100% { transform: translateY(0) rotateY(360deg) scale(1) }
+}
+
+@keyframes eggPop {
+  from { transform: scale(.7); opacity: 0 }
+}
+
+.egg-card-front,
+.egg-card-back {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden
+}
+
+.egg-card-back {
+  display: grid;
+  place-content: center;
+  gap: 14px;
+  text-align: center;
+  transform: rotateY(180deg);
+  background: repeating-conic-gradient(#6c2bd9 0 25%, #5a1ab4 0 50%) 0 0 / 32px 32px;
+  border: 14px solid var(--color-yellow);
+  outline: 6px solid var(--color-ink);
+  box-shadow: inset 0 0 0 6px var(--color-ink), 12px 12px 0 6px #0d0320;
+  color: var(--color-yellow);
+  font-family: var(--font-pixel)
+}
+
+.egg-card-back b {
+  font-size: clamp(64px, 12vw, 110px);
+  line-height: 1;
+  text-shadow: 6px 6px 0 var(--color-ink)
+}
+
+.egg-card-back span {
+  font-size: 13px;
+  text-shadow: 3px 3px 0 var(--color-ink)
+}
+
+.egg-card-back small {
+  color: var(--color-cream);
+  font-size: 8px
+}
+
+.egg-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 720 / 1008;
+  transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform .2s ease-out;
+  filter: drop-shadow(10px 10px 0 #0d0320)
+}
+
+.egg-card canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated
+}
+
+.egg-card-foil,
+.egg-card-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none
+}
+
+.egg-card-foil {
+  opacity: .28;
+  mix-blend-mode: color-dodge;
+  background: linear-gradient(115deg, transparent 32%, #9be7ff 42%, #f4dfff 48%, #f4c63f 54%, transparent 64%) 0 0 / 300% 300%;
+  animation: eggFoil 4.8s steps(36) infinite
+}
+
+.egg-card.rarity-epic .egg-card-foil {
+  opacity: .4
+}
+
+.egg-card.rarity-legendary .egg-card-foil {
+  opacity: .55;
+  background-image: linear-gradient(115deg, transparent 26%, #ff5f6d 36%, #f4c63f 42%, #68c44a 48%, #9be7ff 54%, #6c2bd9 60%, transparent 70%)
+}
+
+@keyframes eggFoil {
+  0% { background-position: 100% 100% }
+  60%, 100% { background-position: 0 0 }
+}
+
+.egg-card-glare {
+  opacity: 0;
+  mix-blend-mode: overlay;
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 0%), rgba(255, 255, 255, .55), transparent 48%);
+  transition: opacity .2s
+}
+
+.egg-card.can-tilt:hover .egg-card-glare {
+  opacity: 1
+}
+
+.egg-reveal-info {
+  grid-area: info;
+  align-self: start
+}
+
+.egg-reveal-how {
+  margin: 0;
+  color: #fff8e7;
+  font-size: 17px;
+  line-height: 1.55
+}
+
+.egg-progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  color: var(--color-cream);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  line-height: 1.7;
+  letter-spacing: -.04em
+}
+
+.egg-progress.is-training {
+  color: var(--color-blue)
+}
+
+.egg-pips {
+  display: flex;
+  gap: 6px
+}
+
+.egg-pips i {
+  width: 18px;
+  height: 18px;
+  background: #3d1478;
+  border: 3px solid #0d0320
+}
+
+.egg-pips i.is-found {
+  background: var(--color-yellow);
+  box-shadow: inset -3px -3px 0 #d39b1f
+}
+
+.egg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 26px
+}
+
+.egg-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  background: var(--color-cream);
+  border: 3px solid var(--color-ink);
+  box-shadow: 5px 5px 0 #0d0320;
+  color: var(--color-ink);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  letter-spacing: -.04em;
+  text-transform: uppercase;
+  transition: transform .12s, box-shadow .12s
+}
+
+.egg-action.primary {
+  background: var(--color-yellow)
+}
+
+.egg-action svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.6
+}
+
+.egg-action:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 #0d0320
+}
+
+.egg-action:active {
+  transform: translate(4px, 4px);
+  box-shadow: 1px 1px 0 #0d0320
+}
+
+.egg-status {
+  min-height: 1.5em;
+  margin: 14px 0 0;
+  color: var(--color-blue);
+  font-size: 14px
+}
+
+@media(max-width:860px) {
+  .egg-reveal-stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "card" "info";
+    justify-items: center;
+    text-align: center;
+    padding-top: 40px
+  }
+
+  .egg-reveal-head {
+    align-self: auto
+  }
+
+  .egg-flip {
+    width: min(340px, 78vw, calc(62vh * .714));
+    width: min(340px, 78vw, calc(62dvh * .714))
+  }
+
+  .egg-progress,
+  .egg-actions {
+    justify-content: center
+  }
+
+  .egg-close {
+    top: 12px;
+    right: 12px
+  }
+}
+
+/* Vault */
+.egg-vault .egg-dialog {
+  max-width: 1060px
+}
+
+.egg-vault-panel {
+  position: relative;
+  padding: 40px clamp(16px, 4vw, 44px) 32px;
+  background: var(--color-cream);
+  border: 4px solid var(--color-ink);
+  box-shadow: 12px 12px 0 #0d0320;
+  animation: eggPop .3s steps(5, end) both
+}
+
+.egg-vault .egg-close {
+  position: absolute;
+  top: 14px;
+  right: 14px
+}
+
+.egg-vault-head {
+  max-width: 640px
+}
+
+.egg-vault-head .eyebrow {
+  margin: 0 0 10px
+}
+
+.egg-vault-head h2 {
+  margin: 0 0 14px;
+  color: var(--color-ink);
+  text-shadow: 3px 3px 0 var(--color-yellow)
+}
+
+.egg-vault-head>p:not(.eyebrow) {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55
+}
+
+.egg-vault-meter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px
+}
+
+.egg-vault-meter i {
+  width: 36px;
+  height: 16px;
+  background: #e9dcc0;
+  border: 3px solid var(--color-ink)
+}
+
+.egg-vault-meter i.is-found {
+  background: var(--color-green);
+  box-shadow: inset 0 3px 0 #9be35c
+}
+
+.egg-vault-meter b {
+  margin-left: 8px;
+  font-family: var(--font-pixel);
+  font-size: 11px
+}
+
+.egg-vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 22px 18px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none
+}
+
+.egg-slot button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  transition: transform .12s
+}
+
+.egg-slot button:hover {
+  transform: translate(-2px, -4px)
+}
+
+.egg-slot .egg-card {
+  filter: drop-shadow(6px 6px 0 var(--color-ink))
+}
+
+.egg-slot-mystery {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 720 / 1008;
+  background: repeating-linear-gradient(45deg, #2a0b4f 0 8px, #34105f 8px 16px);
+  border: 4px solid var(--color-ink);
+  box-shadow: 6px 6px 0 #c9b8e4;
+  color: #8f55ec;
+  font-family: var(--font-pixel)
+}
+
+.egg-slot-mystery b {
+  font-size: 44px;
+  text-shadow: 4px 4px 0 #0d0320
+}
+
+.egg-slot-mystery svg {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.6
+}
+
+.egg-slot.is-training .egg-slot-mystery {
+  color: var(--color-blue)
+}
+
+.egg-slot-label {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  font-family: var(--font-pixel);
+  letter-spacing: -.04em
+}
+
+.egg-slot-label small {
+  color: var(--color-purple);
+  font-size: 7px
+}
+
+.egg-slot-label b {
+  color: var(--color-ink);
+  font-size: 9px;
+  line-height: 1.5
+}
+
+.egg-slot-locked p {
+  margin: 8px 0 0;
+  color: #5b4579;
+  font-size: 13px;
+  line-height: 1.45
+}
+
+.egg-vault-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 2px dashed #6c2bd955
+}
+
+.egg-vault-foot p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5
+}
+
+.egg-vault-foot p b {
+  margin-right: 8px;
+  padding: 4px 6px;
+  background: var(--color-blue);
+  border: 2px solid var(--color-ink);
+  font-family: var(--font-pixel);
+  font-size: 7px
+}
+
+.egg-vault-foot button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  background: var(--color-ivory);
+  border: 3px solid var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+  font-family: var(--font-pixel);
+  font-size: 8px
+}
+
+.egg-vault-foot button svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 2.6
+}
+
+/* Footer vault chip */
+.egg-vault-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 7px 12px;
+  background: var(--color-yellow);
+  border: 3px solid var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+  color: var(--color-ink);
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  letter-spacing: -.04em;
+  transition: transform .12s, box-shadow .12s
+}
+
+.egg-vault-chip:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-ink)
+}
+
+.egg-vault-chip i {
+  width: 11px;
+  height: 14px;
+  background: var(--color-cream);
+  border: 2px solid var(--color-ink);
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  box-shadow: inset -2px -2px 0 #e9dcc0
+}
+
+.egg-vault-chip.is-complete {
+  background: var(--color-green)
+}
+
+.egg-vault-chip.is-complete i {
+  background: var(--color-yellow);
+  box-shadow: inset -2px -2px 0 #d39b1f;
+  animation: dirtBlink 1.8s steps(2, end) infinite
+}
+
+@media(max-width:760px) {
+  .egg-vault-chip {
+    order: 1
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .egg-overlay,
+  .egg-flip-inner,
+  .egg-reveal-banner,
+  .egg-vault-panel,
+  .pixel-nudge,
+  .egg-card-foil,
+  .egg-reveal-rays,
+  .egg-vault-chip.is-complete i {
+    animation: none !important
+  }
+
+  .egg-confetti {
+    display: none
+  }
+
+  .egg-card {
+    transition: none;
+    transform: none
   }
 }

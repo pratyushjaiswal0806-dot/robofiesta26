@@ -4,6 +4,7 @@ import { SoundProvider } from '@/components/SoundSystem'
 import { StructuredData } from '@/components/StructuredData'
 import { MotionDirector } from '@/components/MotionDirector'
 import { SiteLoader } from '@/components/SiteLoader'
+import { EasterEggs } from '@/components/easter-eggs/EasterEggs'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -53,6 +54,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <link id="robofiesta-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" />
       <script id="robofiesta-loader-preflight" dangerouslySetInnerHTML={{ __html: `try { if (localStorage.getItem('robofiesta-pixel-arc-loader-seen') === '1') document.documentElement.style.setProperty('--robofiesta-loader-display', 'none') } catch {}` }} />
     </head>
-    <body><StructuredData /><SoundProvider><SiteLoader /><MotionDirector />{children}</SoundProvider></body>
+    <body><StructuredData /><SoundProvider><SiteLoader /><MotionDirector />{children}<EasterEggs /></SoundProvider></body>
   </html>
 }
